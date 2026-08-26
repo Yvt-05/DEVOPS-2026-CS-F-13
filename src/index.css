@@ -1,14 +1,36 @@
 @import "tailwindcss";
 
+/* ──────────────────────────────────────────────────────────
+   CSS Custom Properties — Brand Tokens
+   ────────────────────────────────────────────────────────── */
+:root {
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  --color-bg: #0a0a0a;
+  --color-surface: #111111;
+  --color-border: rgba(255, 255, 255, 0.07);
+  --color-text: #f0ede8;
+  --color-muted: #7a7673;
+  --color-accent: #b8956a;   /* warm stone/gold — use sparingly */
+}
+
+/* ──────────────────────────────────────────────────────────
+   Base
+   ────────────────────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
-  background: #0b0b0b;
-  color: #f5f5f5;
-  font-family: Arial, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 * {
@@ -18,4 +40,119 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+/* ──────────────────────────────────────────────────────────
+   Scroll Reveal
+   Elements with class "reveal" start hidden and animate in
+   when IntersectionObserver adds the "visible" class.
+   ────────────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(36px);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger helpers — add alongside "reveal" */
+.reveal-delay-1 { transition-delay: 0.12s; }
+.reveal-delay-2 { transition-delay: 0.24s; }
+.reveal-delay-3 { transition-delay: 0.36s; }
+.reveal-delay-4 { transition-delay: 0.48s; }
+
+/* ──────────────────────────────────────────────────────────
+   Hero Text Entrance Animations
+   ────────────────────────────────────────────────────────── */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-line-1 {
+  animation: slideUp 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+
+.hero-line-2 {
+  animation: slideUp 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+}
+
+.hero-sub {
+  animation: slideUp 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both;
+}
+
+.hero-cta {
+  animation: slideUp 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.6s both;
+}
+
+/* ──────────────────────────────────────────────────────────
+   Image Zoom on Hover
+   Wrap an <img> inside a div with class "img-wrap"
+   ────────────────────────────────────────────────────────── */
+.img-wrap {
+  overflow: hidden;
+}
+
+.img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.img-wrap:hover img {
+  transform: scale(1.04);
+}
+
+/* ──────────────────────────────────────────────────────────
+   Mobile Menu Overlay Transition
+   ────────────────────────────────────────────────────────── */
+.mobile-overlay {
+  transform: translateX(100%);
+  transition: transform 0.5s cubic-bezier(0.77, 0, 0.18, 1);
+}
+
+.mobile-overlay.open {
+  transform: translateX(0);
+}
+
+/* ──────────────────────────────────────────────────────────
+   Scrollbar
+   ────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 2px;
+}
+
+/* ──────────────────────────────────────────────────────────
+   Reduced Motion — respect user accessibility preferences
+   ────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .hero-line-1,
+  .hero-line-2,
+  .hero-sub,
+  .hero-cta {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

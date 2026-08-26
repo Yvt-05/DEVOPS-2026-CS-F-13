@@ -1,3 +1,6 @@
+// NOTE: All project data below is placeholder.
+// Replace with actual Shivakriti Constructions project information in Phase 2.
+
 const projects = [
   {
     id: 1,
@@ -7,19 +10,21 @@ const projects = [
     year: "2024",
     status: "Completed",
     description:
-      "A contemporary residential development focused on modern architecture and functional living.",
-    image: "/projects/aria.jpg",
+      "A contemporary residential development focused on modern architecture and functional living. The design emphasizes natural light, open floor plans, and premium finishes throughout — creating homes that are both beautiful and built to endure.",
+    image: "/images/projects/project-1.jpg",
+    gallery: [],
   },
   {
     id: 2,
-    title: "Vertex Tower",
+    title: "Vertex Commercial Centre",
     location: "Jaipur, Rajasthan",
     type: "Commercial",
     year: "2023",
     status: "Completed",
     description:
-      "A modern commercial development designed for contemporary businesses.",
-    image: "/projects/vertex.jpg",
+      "A modern commercial development designed to meet the demands of contemporary business. Clean structural lines, efficient floor plans, and premium construction make this a landmark address — a space that works as impressively as it looks.",
+    image: "/images/projects/project-2.jpg",
+    gallery: [],
   },
   {
     id: 3,
@@ -29,8 +34,9 @@ const projects = [
     year: "2025",
     status: "Completed",
     description:
-      "A luxury residence combining minimal architecture with natural materials.",
-    image: "/projects/horizon.jpg",
+      "A luxury villa that blends a minimal architectural language with the warmth of natural materials. Every detail has been thoughtfully considered — from the structural foundation to the final surface finish — to create a residence that feels both grand and intimate.",
+    image: "/images/projects/project-3.jpg",
+    gallery: [],
   },
 ];
 
