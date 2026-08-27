@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import projects from "../data/projects";
+import ThreeHeroScene from "../components/ThreeHeroScene";
 
 // ── Section Data ────────────────────────────────────────────────────────────
 
@@ -90,19 +91,10 @@ function Home() {
         <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent
           to-transparent pointer-events-none" />
 
-        {/* ── Phase 3 Placeholder: Three.js scene will replace this ──
-            A minimal wireframe box represents the future 3D model space. */}
-        <div className="absolute top-1/2 right-8 lg:right-20 -translate-y-1/2 w-64 h-64
-          lg:w-80 lg:h-80 opacity-[0.07] pointer-events-none hidden lg:block">
-          <div className="absolute inset-0 border border-white" />
-          <div className="absolute inset-6 border border-white" />
-          <div className="absolute inset-12 border border-white" />
-          <div className="absolute top-0 left-1/2 bottom-0 w-px bg-white" />
-          <div className="absolute left-0 top-1/2 right-0 h-px bg-white" />
-          <p className="absolute bottom-3 left-3 text-[8px] tracking-[0.3em] text-white/50 uppercase">
-            3D Scene — Phase 3
-          </p>
-        </div>
+        {/* ── Three.js Architectural Scene ──
+            Absolute positioned, fills the hero background.
+            pointer-events-none so the hero text stays clickable. */}
+        <ThreeHeroScene />
 
         {/* Hero text content */}
         <div className="relative z-10 max-w-5xl">
