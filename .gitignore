@@ -1,4 +1,29 @@
+# Dependencies
 node_modules
+node_modules/
+
+# Build output
 dist
+dist/
+
+# Environment variables — NEVER commit these
 .env
+.env.local
+.env.production
+.env.*
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Docker secrets (if any)
+*.pem
+*.key

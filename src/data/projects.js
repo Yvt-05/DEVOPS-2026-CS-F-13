@@ -1,5 +1,6 @@
 // NOTE: All project data below is placeholder.
 // Replace with actual Shivakriti Constructions project information in Phase 2.
+// Image paths point to public/images/projects/ — add real photos there.
 
 const projects = [
   {
@@ -12,6 +13,7 @@ const projects = [
     description:
       "A contemporary residential development focused on modern architecture and functional living. The design emphasizes natural light, open floor plans, and premium finishes throughout — creating homes that are both beautiful and built to endure.",
     image: "/images/projects/project-1.jpg",
+    // Add real gallery images here — e.g. "/images/projects/aria-gallery-1.jpg"
     gallery: [],
   },
   {
