@@ -142,6 +142,24 @@ a {
 }
 
 /* ──────────────────────────────────────────────────────────
+   Engagement Prompt Entrance
+   ────────────────────────────────────────────────────────── */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.engagement-enter {
+  animation: slideInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ──────────────────────────────────────────────────────────
    Reduced Motion — respect user accessibility preferences
    ────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {

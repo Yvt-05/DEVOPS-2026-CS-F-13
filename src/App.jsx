@@ -3,6 +3,7 @@ import { useEffect } from "react";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import EngagementPrompt from "./components/EngagementPrompt";
 
 import Home from "./pages/Home";
 import Projects from "./pages/Projects";
@@ -36,6 +37,9 @@ function App() {
       </Routes>
 
       <Footer />
+
+      {/* Smart visitor engagement — shown after genuine interaction signals */}
+      <EngagementPrompt />
     </BrowserRouter>
   );
 }

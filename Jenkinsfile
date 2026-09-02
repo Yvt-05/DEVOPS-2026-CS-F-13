@@ -1,43 +1,65 @@
-// Trigger Jenkins build via GitHub webhook test
+/*
+  Jenkinsfile — Shivakriti Constructions CI Pipeline
+  ────────────────────────────────────────────────────
+  Triggered automatically by GitHub webhook on every push.
+
+  Stages:
+    1. Checkout          — get the latest code from GitHub
+    2. Install (Frontend)— npm install for React/Vite frontend
+    3. Build (Frontend)  — npm run build (Vite production bundle)
+    4. Install (Backend) — npm install for Express backend
+    5. Archive Artifacts — save the built dist/ folder in Jenkins
+*/
 pipeline {
     agent any
 
     stages {
+
         stage('Checkout') {
             steps {
-                echo 'Checking out source code from Git...'
+                echo 'Checking out source code from GitHub...'
                 checkout scm
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Install Frontend Dependencies') {
             steps {
-                echo 'Installing npm dependencies...'
+                echo 'Installing frontend npm packages...'
                 bat 'npm install'
             }
         }
 
-        stage('Build') {
+        stage('Build Frontend') {
             steps {
-                echo 'Building production bundle...'
+                echo 'Building Vite production bundle...'
                 bat 'npm run build'
             }
         }
 
-        stage('Archive Artifacts') {
+        stage('Install Backend Dependencies') {
             steps {
-                echo 'Archiving build artifacts...'
+                echo 'Installing backend npm packages...'
+                dir('server') {
+                    bat 'npm install'
+                }
+            }
+        }
+
+        stage('Archive Build') {
+            steps {
+                echo 'Saving dist/ build artifacts...'
                 archiveArtifacts artifacts: 'dist/**', fingerprint: true, allowEmptyArchive: true
             }
         }
+
     }
 
     post {
         success {
-            echo 'Build and Packaging Succeeded!'
+            echo '✅ Shivakriti Constructions build succeeded!'
         }
         failure {
-            echo 'Build Failed! Please check the console output.'
+            echo '❌ Build failed — check the console output above for details.'
         }
     }
 }
