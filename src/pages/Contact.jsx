@@ -1,7 +1,13 @@
 import { useState } from "react";
 
+/*
+  Contact / Enquiry Page
+  ──────────────────────
+  Submits the form to POST /api/enquiries (Express + MongoDB backend).
+  On success, shows a thank-you screen.
+  On failure, shows an error message.
+*/
 function Contact() {
-  // Form field values stored in one state object
   const [form, setForm] = useState({
     name:        "",
     email:       "",
@@ -16,7 +22,7 @@ function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [error,     setError]     = useState("");
 
-  // Updates one field at a time by using the input's name attribute
+  // Updates one field at a time using the input's name attribute
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
@@ -27,23 +33,21 @@ function Contact() {
     setError("");
 
     try {
-      /*
-        Phase 4: Replace the simulated delay below with a real API call:
+      // Send enquiry to the Express backend
+      const response = await fetch("http://localhost:5000/api/enquiries", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify(form),
+      });
 
-        const response = await fetch("/api/enquiries", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
-        });
-        if (!response.ok) throw new Error("Server error");
-      */
-
-      // Simulated network delay for Phase 1 (no backend yet)
-      await new Promise((resolve) => setTimeout(resolve, 1200));
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Server error");
+      }
 
       setSubmitted(true);
     } catch (err) {
-      setError("Something went wrong. Please try again or contact us directly.");
+      setError(err.message || "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -54,7 +58,7 @@ function Contact() {
     "w-full bg-transparent border-b border-white/12 py-4 text-sm text-white " +
     "placeholder-neutral-700 focus:outline-none focus:border-white/40 transition-colors";
 
-  // ── Success state ──────────────────────────────────────────────────────────
+  // ── Success Screen ─────────────────────────────────────────────────────────
   if (submitted) {
     return (
       <main className="min-h-screen flex flex-col justify-center items-center px-6 text-center">
@@ -74,11 +78,11 @@ function Contact() {
     );
   }
 
-  // ── Main Form ──────────────────────────────────────────────────────────────
+  // ── Enquiry Form ───────────────────────────────────────────────────────────
   return (
     <main className="pt-32 min-h-screen">
 
-      {/* ── Page Header ── */}
+      {/* Page Header */}
       <div className="px-6 lg:px-12 pb-20 border-b border-white/5">
         <p className="hero-sub text-[9px] tracking-[0.45em] uppercase text-neutral-500 mb-6">
           Start a Project
@@ -93,12 +97,11 @@ function Contact() {
 
       <div className="px-6 lg:px-12 py-20 grid lg:grid-cols-2 gap-20">
 
-        {/* ── Left: Contact Information ── */}
+        {/* Left — Contact Info */}
         <div>
           <p className="text-[9px] tracking-[0.45em] uppercase text-neutral-600 mb-12">
             Get In Touch
           </p>
-
           {/* NOTE: Replace with actual contact details */}
           <div className="flex flex-col gap-10">
             {[
@@ -116,37 +119,23 @@ function Contact() {
           </div>
         </div>
 
-        {/* ── Right: Enquiry Form ── */}
+        {/* Right — Form */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-8">
 
           {/* Row 1 — Name + Email */}
           <div className="grid sm:grid-cols-2 gap-8">
             <label className="flex flex-col gap-2">
-              <span className="text-[9px] tracking-widest uppercase text-neutral-600">
-                Name *
-              </span>
+              <span className="text-[9px] tracking-widest uppercase text-neutral-600">Name *</span>
               <input
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                required
-                placeholder="Your full name"
-                className={inputClass}
+                name="name" value={form.name} onChange={handleChange}
+                required placeholder="Your full name" className={inputClass}
               />
             </label>
-
             <label className="flex flex-col gap-2">
-              <span className="text-[9px] tracking-widest uppercase text-neutral-600">
-                Email *
-              </span>
+              <span className="text-[9px] tracking-widest uppercase text-neutral-600">Email *</span>
               <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                required
-                placeholder="your@email.com"
-                className={inputClass}
+                type="email" name="email" value={form.email} onChange={handleChange}
+                required placeholder="your@email.com" className={inputClass}
               />
             </label>
           </div>
@@ -154,26 +143,16 @@ function Contact() {
           {/* Row 2 — Phone + Project Type */}
           <div className="grid sm:grid-cols-2 gap-8">
             <label className="flex flex-col gap-2">
-              <span className="text-[9px] tracking-widest uppercase text-neutral-600">
-                Phone
-              </span>
+              <span className="text-[9px] tracking-widest uppercase text-neutral-600">Phone</span>
               <input
-                name="phone"
-                value={form.phone}
-                onChange={handleChange}
-                placeholder="+91 00000 00000"
-                className={inputClass}
+                name="phone" value={form.phone} onChange={handleChange}
+                placeholder="+91 00000 00000" className={inputClass}
               />
             </label>
-
             <label className="flex flex-col gap-2">
-              <span className="text-[9px] tracking-widest uppercase text-neutral-600">
-                Project Type
-              </span>
+              <span className="text-[9px] tracking-widest uppercase text-neutral-600">Project Type</span>
               <select
-                name="projectType"
-                value={form.projectType}
-                onChange={handleChange}
+                name="projectType" value={form.projectType} onChange={handleChange}
                 className={inputClass + " bg-transparent"}
               >
                 <option className="bg-[#0a0a0a]">Residential</option>
@@ -187,26 +166,16 @@ function Contact() {
           {/* Row 3 — Location + Budget */}
           <div className="grid sm:grid-cols-2 gap-8">
             <label className="flex flex-col gap-2">
-              <span className="text-[9px] tracking-widest uppercase text-neutral-600">
-                Project Location
-              </span>
+              <span className="text-[9px] tracking-widest uppercase text-neutral-600">Project Location</span>
               <input
-                name="location"
-                value={form.location}
-                onChange={handleChange}
-                placeholder="City, State"
-                className={inputClass}
+                name="location" value={form.location} onChange={handleChange}
+                placeholder="City, State" className={inputClass}
               />
             </label>
-
             <label className="flex flex-col gap-2">
-              <span className="text-[9px] tracking-widest uppercase text-neutral-600">
-                Estimated Budget
-              </span>
+              <span className="text-[9px] tracking-widest uppercase text-neutral-600">Estimated Budget</span>
               <select
-                name="budget"
-                value={form.budget}
-                onChange={handleChange}
+                name="budget" value={form.budget} onChange={handleChange}
                 className={inputClass + " bg-transparent"}
               >
                 <option value="" className="bg-[#0a0a0a]">Select a range</option>
@@ -221,32 +190,22 @@ function Contact() {
 
           {/* Row 4 — Message */}
           <label className="flex flex-col gap-2">
-            <span className="text-[9px] tracking-widest uppercase text-neutral-600">
-              Message *
-            </span>
+            <span className="text-[9px] tracking-widest uppercase text-neutral-600">Message *</span>
             <textarea
-              name="message"
-              value={form.message}
-              onChange={handleChange}
-              required
-              rows={5}
-              placeholder="Tell us about your project…"
+              name="message" value={form.message} onChange={handleChange}
+              required rows={5} placeholder="Tell us about your project…"
               className={inputClass + " resize-none"}
             />
           </label>
 
-          {/* Error message */}
-          {error && (
-            <p className="text-red-400 text-xs">{error}</p>
-          )}
+          {error && <p className="text-red-400 text-xs">{error}</p>}
 
-          {/* Submit button */}
           <button
             type="submit"
             disabled={loading}
-            className="self-start text-[10px] tracking-[0.4em] uppercase border
-              border-white/22 px-10 py-4 hover:bg-white hover:text-[#0a0a0a]
-              transition-all duration-400 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="self-start text-[10px] tracking-[0.4em] uppercase border border-white/22
+              px-10 py-4 hover:bg-white hover:text-[#0a0a0a] transition-all duration-400
+              disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {loading ? "Sending…" : "Send Enquiry →"}
           </button>
