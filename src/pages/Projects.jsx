@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import projects from "../data/projects";
+import projects, { extraPhotos } from "../data/projects";
 
 function Projects() {
   // Scroll reveal — same pattern used across all pages
@@ -107,6 +107,47 @@ function Projects() {
           </article>
         ))}
       </div>
+
+      {/* ── Extra Photos / On-Site Construction Archive ── */}
+      {extraPhotos && extraPhotos.length > 0 && (
+        <section className="py-24 px-6 lg:px-12 border-b border-white/5">
+          <div className="mb-14 flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+              <p className="reveal text-[9px] tracking-[0.45em] uppercase text-[#b8956a] mb-4">
+                Field &amp; Construction Archive
+              </p>
+              <h2
+                style={{ fontFamily: "var(--font-display)" }}
+                className="reveal reveal-delay-1 text-4xl lg:text-6xl font-light"
+              >
+                On-Site Documentation
+              </h2>
+            </div>
+            <p className="reveal reveal-delay-2 text-xs text-neutral-500 max-w-sm leading-relaxed">
+              Real progress photography capturing structural framing, reinforcement, masonry, and architectural finishes across our worksites.
+            </p>
+          </div>
+
+          {/* Grid showcase of extra photos */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {extraPhotos.map((photo, i) => (
+              <div
+                key={i}
+                className={`reveal reveal-delay-${(i % 4) + 1} img-wrap bg-neutral-900 border border-white/5 overflow-hidden ${
+                  i % 6 === 0 ? "col-span-2 row-span-2 aspect-[16/10]" : "aspect-[4/3]"
+                }`}
+              >
+                <img
+                  src={photo}
+                  alt={`Site documentation ${i + 1}`}
+                  className="opacity-80 hover:opacity-100 transition-opacity duration-500 object-cover w-full h-full"
+                  onError={(e) => { e.currentTarget.style.display = "none"; }}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ── Enquiry CTA ── */}
       <section className="py-36 px-6 lg:px-12 text-center border-t border-white/5">

@@ -76,6 +76,16 @@ function Home() {
       <section className="relative min-h-screen flex flex-col justify-end px-6 lg:px-12
         pb-28 pt-32 overflow-hidden">
 
+        {/* Real hero background photo — sits behind everything */}
+        <div className="absolute inset-0">
+          <img
+            src="/images/hero/hero-bg.png"
+            alt=""
+            className="w-full h-full object-cover opacity-25"
+            onError={(e) => { e.currentTarget.style.display = "none"; }}
+          />
+        </div>
+
         {/* Subtle architectural blueprint grid */}
         <div
           className="absolute inset-0 pointer-events-none"
@@ -87,7 +97,7 @@ function Home() {
           }}
         />
 
-        {/* Gradient — fades the grid into the solid dark background */}
+        {/* Gradient — fades bottom into solid dark background */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent
           to-transparent pointer-events-none" />
 
@@ -340,6 +350,100 @@ function Home() {
               className="opacity-80"
               onError={(e) => { e.currentTarget.style.display = "none"; }}
             />
+          </div>
+        </div>
+
+        {/* ── Project 04 — Info left, image right with gallery preview count ── */}
+        <div className="reveal border-t border-white/5 px-6 lg:px-12 py-16">
+          <div className="grid lg:grid-cols-5 gap-8 items-center">
+            <div className="lg:col-span-2 flex flex-col justify-between gap-8">
+              <p
+                style={{ fontFamily: "var(--font-display)" }}
+                className="text-[5.5rem] font-light leading-none text-white/8 select-none"
+              >
+                04
+              </p>
+              <div>
+                <p className="text-[9px] tracking-widest text-neutral-600 uppercase mb-3">
+                  {projects[3].type} · {projects[3].year} · {projects[3].status}
+                </p>
+                <h3
+                  style={{ fontFamily: "var(--font-display)" }}
+                  className="text-4xl lg:text-5xl font-light"
+                >
+                  {projects[3].title}
+                </h3>
+                <p className="mt-2 text-sm text-neutral-500">{projects[3].location}</p>
+                <p className="mt-4 text-sm text-neutral-600 leading-relaxed">
+                  {projects[3].description.slice(0, 120)}…
+                </p>
+                <Link
+                  to={`/projects/${projects[3].id}`}
+                  className="mt-8 inline-flex items-center gap-3 text-[10px]
+                    tracking-[0.3em] uppercase text-neutral-500 hover:text-white
+                    transition-colors group"
+                >
+                  Explore Project ({projects[3].gallery.length} Photos)
+                  <span className="h-px w-6 bg-white/25 group-hover:w-10 transition-all
+                    duration-400" />
+                </Link>
+              </div>
+            </div>
+
+            <div className="lg:col-span-3 img-wrap aspect-[16/10] bg-neutral-900 border border-white/5">
+              <img
+                src={projects[3].image}
+                alt={projects[3].title}
+                className="opacity-80"
+                onError={(e) => { e.currentTarget.style.display = "none"; }}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* ── Project 05 — Image left, info right ── */}
+        <div className="reveal border-t border-white/5 px-6 lg:px-12 py-16">
+          <div className="grid lg:grid-cols-5 gap-8 items-center">
+            <div className="lg:col-span-3 img-wrap aspect-[16/9] bg-neutral-900 border border-white/5">
+              <img
+                src={projects[4].image}
+                alt={projects[4].title}
+                className="opacity-80"
+                onError={(e) => { e.currentTarget.style.display = "none"; }}
+              />
+            </div>
+
+            <div className="lg:col-span-2 lg:pl-8">
+              <p
+                style={{ fontFamily: "var(--font-display)" }}
+                className="text-[5.5rem] font-light leading-none text-white/8 mb-6 select-none"
+              >
+                05
+              </p>
+              <p className="text-[9px] tracking-widest text-neutral-600 uppercase mb-3">
+                {projects[4].type} · {projects[4].year} · {projects[4].status}
+              </p>
+              <h3
+                style={{ fontFamily: "var(--font-display)" }}
+                className="text-4xl lg:text-5xl font-light"
+              >
+                {projects[4].title}
+              </h3>
+              <p className="mt-2 text-sm text-neutral-500">{projects[4].location}</p>
+              <p className="mt-6 text-sm text-neutral-600 leading-relaxed">
+                {projects[4].description.slice(0, 110)}…
+              </p>
+              <Link
+                to={`/projects/${projects[4].id}`}
+                className="mt-8 inline-flex items-center gap-3 text-[10px]
+                  tracking-[0.3em] uppercase text-neutral-500 hover:text-white
+                  transition-colors group"
+              >
+                Explore Project
+                <span className="h-px w-6 bg-white/25 group-hover:w-10 transition-all
+                  duration-400" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>

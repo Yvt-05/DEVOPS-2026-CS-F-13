@@ -51,13 +51,23 @@ function Navbar() {
               : "bg-transparent"
           }`}
       >
-        {/* Company Name / Logo */}
+        {/* Company Logo + Name */}
         <Link
           to="/"
-          className="text-xs tracking-[0.28em] uppercase font-light hover:opacity-60 transition-opacity duration-300"
-          style={{ fontFamily: "var(--font-display)", letterSpacing: "0.22em" }}
+          className="flex items-center gap-3 hover:opacity-70 transition-opacity duration-300"
         >
-          Shivakriti Constructions
+          <img
+            src="/images/logo/logo.png"
+            alt="Shivakriti Constructions"
+            className="h-8 w-auto object-contain"
+            onError={(e) => { e.currentTarget.style.display = "none"; }}
+          />
+          <span
+            className="text-xs tracking-[0.22em] uppercase font-light hidden sm:block"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Shivakriti Constructions
+          </span>
         </Link>
 
         {/* Desktop Links */}

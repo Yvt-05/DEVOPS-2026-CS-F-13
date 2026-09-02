@@ -169,9 +169,9 @@ function ProjectDetails() {
           </h2>
         </div>
         <div className="reveal reveal-delay-2 max-w-4xl">
-          {/* Uses project image for both sides as placeholder until real before/after provided */}
+          {/* Uses project gallery image as before and main cover image as after */}
           <BeforeAfterSlider
-            before={project.image}
+            before={project.gallery && project.gallery.length > 0 ? project.gallery[0] : project.image}
             after={project.image}
             alt={project.title}
           />
