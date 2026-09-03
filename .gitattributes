@@ -1,0 +1,5 @@
+# Treat PDFs and images as binary
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
