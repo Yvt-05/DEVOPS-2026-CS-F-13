@@ -101,45 +101,56 @@ function Home() {
         <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent
           to-transparent pointer-events-none" />
 
+        {/* Subtle gradient vignette to ensure text contrast over 3D model */}
+        <div className="absolute inset-y-0 left-0 w-full lg:w-2/3 bg-gradient-to-r from-[#0a0a0a]/90 via-[#0a0a0a]/60 to-transparent pointer-events-none z-[5]" />
+
         {/* ── Three.js Architectural Scene ──
             Absolute positioned, fills the hero background.
             pointer-events-none so the hero text stays clickable. */}
         <ThreeHeroScene />
 
         {/* Hero text content */}
-        <div className="relative z-10 max-w-5xl">
-          <p className="hero-sub text-[9px] tracking-[0.5em] uppercase text-neutral-500 mb-10">
-            Construction &amp; Architecture
+        <div className="relative z-10 max-w-3xl">
+          <p className="hero-sub text-[10px] tracking-[0.45em] uppercase text-[#b89a5a] mb-8 font-medium">
+            Shivakriti Constructions
           </p>
 
           <h1 style={{ fontFamily: "var(--font-display)" }} className="leading-none">
             <span
               className="hero-line-1 block font-light tracking-tight text-white"
-              style={{ fontSize: "clamp(4rem, 10vw, 9.5rem)" }}
+              style={{ fontSize: "clamp(3.8rem, 9.5vw, 9rem)" }}
             >
               WE BUILD.
             </span>
             <span
               className="hero-line-2 block font-light tracking-tight text-white/70"
-              style={{ fontSize: "clamp(4rem, 10vw, 9.5rem)" }}
+              style={{ fontSize: "clamp(3.8rem, 9.5vw, 9rem)" }}
             >
               YOU BELIEVE.
             </span>
           </h1>
 
-          <div className="hero-cta mt-14 flex flex-col sm:flex-row items-start
-            sm:items-center gap-8">
+          <p className="hero-desc mt-8 text-base lg:text-lg text-neutral-400 max-w-md font-light leading-relaxed">
+            Architecture, construction and spaces built with intention.
+          </p>
+
+          <div className="hero-cta mt-12 flex flex-wrap items-center gap-5">
             <Link
               to="/projects"
-              className="text-[10px] tracking-[0.35em] uppercase border border-white/22
-                px-8 py-4 hover:bg-white hover:text-[#0a0a0a] transition-all duration-400
+              className="text-[10px] tracking-[0.3em] uppercase bg-white text-[#0a0a0a]
+                px-8 py-4 font-medium hover:bg-[#b89a5a] hover:text-white transition-all duration-300
                 whitespace-nowrap"
             >
               Explore Projects →
             </Link>
-            <p className="text-sm text-neutral-600 max-w-xs leading-relaxed">
-              Premium construction across Rajasthan — where vision meets craftsmanship.
-            </p>
+            <Link
+              to="/contact"
+              className="text-[10px] tracking-[0.3em] uppercase border border-white/20
+                text-white px-8 py-4 hover:border-white hover:bg-white/5 transition-all duration-300
+                whitespace-nowrap"
+            >
+              Start a Conversation →
+            </Link>
           </div>
         </div>
 
