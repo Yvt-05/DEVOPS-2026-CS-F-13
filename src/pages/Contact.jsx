@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { validateEnquiryForm } from "../utils/validation";
 
 /*
   Contact / Enquiry Page
@@ -29,8 +30,17 @@ function Contact() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setLoading(true);
     setError("");
+
+    // Client-side validation check
+    const validation = validateEnquiryForm(form);
+    if (!validation.isValid) {
+      const firstError = Object.values(validation.errors)[0];
+      setError(firstError);
+      return;
+    }
+
+    setLoading(true);
 
     try {
       // Send enquiry to the Express backend

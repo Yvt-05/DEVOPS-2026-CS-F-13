@@ -4,11 +4,13 @@
   Triggered automatically by GitHub webhook on every push.
 
   Stages:
-    1. Checkout          — get the latest code from GitHub
-    2. Install (Frontend)— npm install for React/Vite frontend
-    3. Build (Frontend)  — npm run build (Vite production bundle)
-    4. Install (Backend) — npm install for Express backend
-    5. Archive Artifacts — save the built dist/ folder in Jenkins
+    1. Checkout               — get the latest code from GitHub
+    2. Install Frontend       — npm install for React/Vite frontend
+    3. Test Frontend          — run Vitest test suite for data & validation
+    4. Build Frontend         — npm run build (Vite production bundle)
+    5. Install Backend        — npm install for Express backend
+    6. Test Backend           — verify Mongoose schemas and API routers
+    7. Archive Artifacts      — save the built dist/ folder in Jenkins
 */
 pipeline {
     agent any
@@ -29,6 +31,13 @@ pipeline {
             }
         }
 
+        stage('Test Frontend') {
+            steps {
+                echo 'Running Vitest test suite...'
+                bat 'npm run test'
+            }
+        }
+
         stage('Build Frontend') {
             steps {
                 echo 'Building Vite production bundle...'
@@ -45,6 +54,15 @@ pipeline {
             }
         }
 
+        stage('Test Backend') {
+            steps {
+                echo 'Verifying backend schemas and routing...'
+                dir('server') {
+                    bat 'npm test'
+                }
+            }
+        }
+
         stage('Archive Build') {
             steps {
                 echo 'Saving dist/ build artifacts...'
@@ -56,10 +74,10 @@ pipeline {
 
     post {
         success {
-            echo '✅ Shivakriti Constructions build succeeded!'
+            echo '✅ Shivakriti Constructions pipeline succeeded (All tests and builds passed)!'
         }
         failure {
-            echo '❌ Build failed — check the console output above for details.'
+            echo '❌ Pipeline failed — check the console output above for details.'
         }
     }
 }
