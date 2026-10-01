@@ -115,15 +115,19 @@ function Contact() {
           {/* NOTE: Replace with actual contact details */}
           <div className="flex flex-col gap-10">
             {[
-              { label: "Email",    value: "contact@shivakriti.com" },
-              { label: "Phone",    value: "+91 00000 00000"        },
+              { label: "Email",    value: "shreekrishantiwari@gmail.com", href: "mailto:shreekrishantiwari@gmail.com" },
+              { label: "Phone",    value: "9413160202",                   href: "tel:9413160202" },
               { label: "Location", value: "Jaipur, Rajasthan"      },
-            ].map(({ label, value }) => (
+            ].map(({ label, value, href }) => (
               <div key={label}>
                 <p className="text-[9px] tracking-widest uppercase text-neutral-700 mb-2">
                   {label}
                 </p>
-                <p className="text-sm text-neutral-400">{value}</p>
+                {href ? (
+                  <a href={href} className="text-sm text-neutral-400 hover:text-[#b89a5a] transition-colors duration-200">{value}</a>
+                ) : (
+                  <p className="text-sm text-neutral-400">{value}</p>
+                )}
               </div>
             ))}
           </div>
