@@ -1,0 +1,36 @@
+# prometheus.yml — Shivakriti Constructions Monitoring Configuration
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+  external_labels:
+    monitor: 'shivakriti-devops-monitor'
+    environment: 'production'
+
+scrape_configs:
+  # 1. Prometheus Self-Monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+        labels:
+          service: 'prometheus-engine'
+          tier: 'monitoring'
+
+  # 2. Shivakriti Constructions Backend API & Metrics
+  - job_name: 'shivakriti-backend'
+    metrics_path: '/metrics'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['backend:5000']
+        labels:
+          service: 'express-api'
+          tier: 'backend'
+          app: 'shivakriti-constructions'
+
+  # 3. Node Exporter (Host & System Infrastructure Metrics)
+  - job_name: 'node-exporter'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['node-exporter:9100']
+        labels:
+          service: 'system-metrics'
+          tier: 'infrastructure'

@@ -10,7 +10,8 @@
     4. Build Frontend         — npm run build (Vite production bundle)
     5. Install Backend        — npm install for Express backend
     6. Test Backend           — verify Mongoose schemas and API routers
-    7. Archive Artifacts      — save the built dist/ folder in Jenkins
+    7. Validate Docker        — verify Dockerfile & Docker Compose specification
+    8. Archive Artifacts      — save the built dist/ folder in Jenkins
 */
 pipeline {
     agent any
@@ -63,6 +64,13 @@ pipeline {
             }
         }
 
+        stage('Validate Docker Configuration') {
+            steps {
+                echo 'Validating Dockerfile and Docker Compose specification...'
+                bat 'docker compose config -q'
+            }
+        }
+
         stage('Archive Build') {
             steps {
                 echo 'Saving dist/ build artifacts...'
@@ -74,7 +82,7 @@ pipeline {
 
     post {
         success {
-            echo '✅ Shivakriti Constructions pipeline succeeded (All tests and builds passed)!'
+            echo '✅ Shivakriti Constructions pipeline succeeded (All tests, builds, and Docker validation passed)!'
         }
         failure {
             echo '❌ Pipeline failed — check the console output above for details.'

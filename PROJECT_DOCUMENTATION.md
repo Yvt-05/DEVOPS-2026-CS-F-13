@@ -177,7 +177,13 @@ The repository includes a declarative `Jenkinsfile` for continuous integration u
 4. **Build Frontend:** Runs `npm run build` to compile the optimized production bundle.
 5. **Install Backend Dependencies:** Executes `npm install` within the `server/` directory.
 6. **Test Backend:** Executes `npm test` within `server/` to verify schemas and routes.
-7. **Archive Build:** Archives the compiled `dist/` directory artifacts.
+7. **Validate Docker Configuration:** Executes `docker compose config -q` to validate Dockerfile specifications and Compose service orchestration.
+8. **Archive Build:** Archives the compiled `dist/` directory artifacts.
+
+### Accessing Jenkins & Viewing Build History
+- **Jenkins URL:** `http://localhost:8080/`
+- **Job Name:** `DEVOPS-2026-CS-F-13`
+- **Viewing Builds:** Navigate to `http://localhost:8080/job/DEVOPS-2026-CS-F-13/` to inspect execution history, stage views, and console output.
 
 ---
 
@@ -221,3 +227,67 @@ The `EngagementPrompt` component evaluates visitor engagement using three non-in
 3. Page scroll percentage $\ge 60\%$
 
 When all three conditions are satisfied, a styled bottom-right invitation modal appears. A `sessionStorage` flag ensures it is never displayed more than once during a user session.
+
+---
+
+## 10. Containerized Deployment & Monitoring Stack
+
+The project includes a complete Docker Compose environment integrating the application tiers with Prometheus and Grafana monitoring.
+
+### Architecture & Service Ports
+
+| Service | Container Name | Host Port | Role | Health Endpoint |
+|---|---|---|---|---|
+| **Frontend** | `shivakriti-frontend` | `8085` | Production Nginx web server serving Vite React bundle | `http://localhost:8085/health` |
+| **Backend API** | `shivakriti-backend` | `5000` | Express REST API & Prometheus metrics exporter | `http://localhost:5000/health` |
+| **Node Exporter** | `shivakriti-node-exporter` | `9100` | Host OS & system compute telemetry | `http://localhost:9100/metrics` |
+| **Prometheus** | `shivakriti-prometheus` | `9090` | Time-series metrics engine & scraper | `http://localhost:9090/targets` |
+| **Grafana** | `shivakriti-grafana` | `3000` | Metrics visualization & dashboards | `http://localhost:3000/` |
+
+### Startup & Operational Commands
+
+1. **Start all services in detached mode:**
+   ```bash
+   docker compose up -d
+   ```
+2. **Rebuild container images after code changes:**
+   ```bash
+   docker compose up -d --build
+   ```
+3. **Inspect container runtime status:**
+   ```bash
+   docker compose ps
+   ```
+4. **Stop all services:**
+   ```bash
+   docker compose down
+   ```
+
+### Prometheus Access & Querying
+- **URL:** `http://localhost:9090/`
+- **Targets Page:** `http://localhost:9090/targets` (Displays scrape health for `prometheus`, `shivakriti-backend`, and `node-exporter`).
+- **Standard Queries:**
+  - `up`: Returns target health status (`1` for active targets).
+  - `shivakriti_http_requests_total`: Total HTTP requests served by the Express backend.
+  - `rate(shivakriti_http_requests_total[1m])`: Real-time request throughput.
+  - `histogram_quantile(0.95, sum by (le) (rate(shivakriti_http_request_duration_seconds_bucket[1m])))`: 95th-percentile response latency.
+  - `shivakriti_process_resident_memory_bytes`: Memory consumption of the API process.
+
+### Grafana Access & Datasource Connection
+- **URL:** `http://localhost:3000/`
+- **Default Credentials:**
+  - **Username:** `admin`
+  - **Password:** `admin`
+- **Prometheus Connection Mechanism:**
+  - Automatically provisioned upon container start via `provisioning/datasources/prometheus.yml`.
+  - Configured with proxy URL `http://prometheus:9090` across the internal Docker bridge network.
+- **Pre-provisioned Dashboard:**
+  - Automatically imported via `provisioning/dashboards/dashboards.yml` from `provisioning/dashboards/json/shivakriti-devops-dashboard.json`.
+  - Accessible under the **"Shivakriti Constructions"** dashboard folder.
+  - Features real-time panels for Target Availability, System CPU %, Process Memory, HTTP Request Rates, Response Latency, and Prometheus Scrape Telemetry.
+
+### Jenkins Pipeline & Build History
+- **URL:** `http://localhost:8080/`
+- **Job:** `http://localhost:8080/job/DEVOPS-2026-CS-F-13/`
+- **Build History:** Builds 1–7 record the iterative pipeline development, validating frontend unit tests, Vite bundle compilation, backend schema tests, and Docker Compose specifications.
+
