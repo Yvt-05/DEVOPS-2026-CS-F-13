@@ -57,8 +57,8 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
     const s = sr.current;
     if (!s.amb) return;
     if (duskMode) {
-      s.amb.color.setHex(0xdde4f0); s.amb.groundColor.setHex(0x403830); s.amb.intensity = 0.85;
-      s.sun.intensity = 2.8; s.sun.color.setHex(0xffecc0);
+      s.amb.color.setHex(0xdde4f0); s.amb.groundColor.setHex(0x4a4038); s.amb.intensity = 0.85;
+      s.sun.intensity = 2.4; s.sun.color.setHex(0xffecc0);
       if (s.ren) s.ren.toneMappingExposure = 1.4;
       if (s.scene) s.scene.fog = new THREE.FogExp2(0x0c0c0c, 0.014);
       s.iLts?.forEach(l => { l.intensity = 0.65; });
@@ -67,7 +67,7 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
       s.sun.intensity = 2.0; s.sun.color.setHex(0xfff8ee);
       if (s.ren) s.ren.toneMappingExposure = 1.9;
       if (s.scene) s.scene.fog = new THREE.FogExp2(0x808890, 0.008);
-      s.iLts?.forEach(l => { l.intensity = 0.15; });
+      s.iLts?.forEach(l => { l.intensity = 0.08; });
     }
   }, [duskMode]);
 
@@ -129,10 +129,10 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
     controls.zoomSpeed = 0.8;
 
     // ── Lighting — cinematic architectural ──
-    const amb = new THREE.HemisphereLight(0xdde4f0, 0x403830, 0.85);
+    const amb = new THREE.HemisphereLight(0xdde4f0, 0x4a4038, 0.85);
     scene.add(amb);
 
-    const sun = new THREE.DirectionalLight(0xffecc0, 2.8);
+    const sun = new THREE.DirectionalLight(0xffecc0, 2.4);
     sun.position.set(12, 18, 10);
     if (!mobile) {
       sun.castShadow = true;
@@ -147,7 +147,7 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
     const sky = new THREE.DirectionalLight(0x88aac8, 0.6);
     sky.position.set(-10, 8, -8);
     scene.add(sky);
-    const fill = new THREE.DirectionalLight(0xfff5e8, 0.35);
+    const fill = new THREE.DirectionalLight(0xfff5e8, 0.5);
     fill.position.set(-6, 4, 10);
     scene.add(fill);
     const rim = new THREE.PointLight(0xffd090, 0.55, 25);
@@ -156,35 +156,41 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
     const bounce = new THREE.PointLight(0xe8d8c8, 0.4, 16);
     bounce.position.set(0, -3, 5);
     scene.add(bounce);
+    const bounceFront = new THREE.PointLight(0xf0e0c0, 0.25, 16);
+    bounceFront.position.set(0, -2.5, 8);
+    scene.add(bounceFront);
 
     // Interior window lights array for day/dusk toggles
     const iLts = [];
 
     // ── Materials (refined architectural PBR) ──
-    const WHT = new THREE.MeshStandardMaterial({ color: 0xf4f0eb, roughness: 0.65, metalness: 0.03, envMapIntensity: 0.4 });
-    const WHT2 = new THREE.MeshStandardMaterial({ color: 0xeee9e2, roughness: 0.72, metalness: 0.02, envMapIntensity: 0.3 });
-    const WDK = new THREE.MeshStandardMaterial({ color: 0x62442d, roughness: 0.48, metalness: 0.05, envMapIntensity: 0.5 });
-    const GRY = new THREE.MeshStandardMaterial({ color: 0x827d76, roughness: 0.82, metalness: 0.05, envMapIntensity: 0.3 });
-    const GRY2 = new THREE.MeshStandardMaterial({ color: 0x605c56, roughness: 0.85, metalness: 0.04, envMapIntensity: 0.25 });
-    const MTL = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.22, metalness: 0.94, envMapIntensity: 0.8 });
-    const GLS = new THREE.MeshStandardMaterial({ color: 0x1b2c3a, roughness: 0.04, metalness: 0.35, transparent: true, opacity: 0.40, envMapIntensity: 1.2 });
-    const GLS_BALCONY = new THREE.MeshStandardMaterial({ color: 0x22384a, roughness: 0.03, metalness: 0.45, transparent: true, opacity: 0.48, envMapIntensity: 1.4 });
+    const WHT = new THREE.MeshStandardMaterial({ color: 0xf0ece6, roughness: 0.72, metalness: 0.02, envMapIntensity: 0.4 });
+    const WHT2 = new THREE.MeshStandardMaterial({ color: 0xe8e3db, roughness: 0.78, metalness: 0.02, envMapIntensity: 0.3 });
+    const WDK = new THREE.MeshStandardMaterial({ color: 0x4a3120, roughness: 0.45, metalness: 0.06, envMapIntensity: 0.5 });
+    const GRY = new THREE.MeshStandardMaterial({ color: 0x7a756e, roughness: 0.80, metalness: 0.06, envMapIntensity: 0.3 });
+    const GRY2 = new THREE.MeshStandardMaterial({ color: 0x5a5650, roughness: 0.85, metalness: 0.04, envMapIntensity: 0.25 });
+    const MTL = new THREE.MeshStandardMaterial({ color: 0x1c1c1c, roughness: 0.18, metalness: 0.95, envMapIntensity: 0.8 });
+    const GLS = new THREE.MeshStandardMaterial({ color: 0x8ab4d0, roughness: 0.02, metalness: 0.15, transparent: true, opacity: 0.32, envMapIntensity: 1.8 });
+    const GLS_BALCONY = new THREE.MeshStandardMaterial({ color: 0x7aa8c4, roughness: 0.03, metalness: 0.20, transparent: true, opacity: 0.38, envMapIntensity: 1.4 });
     const BRS = new THREE.MeshStandardMaterial({ color: 0xb89a5a, roughness: 0.25, metalness: 0.85, envMapIntensity: 0.7 });
     const GRN = new THREE.MeshStandardMaterial({ color: 0x3d5832, roughness: 0.7, metalness: 0.0 });
     const GRN2 = new THREE.MeshStandardMaterial({ color: 0x4a6a3e, roughness: 0.65, metalness: 0.0 });
-    const FLOWER = new THREE.MeshStandardMaterial({ color: 0xd9b244, roughness: 0.6, metalness: 0.0 }); // yellow flowering shrubs
+    const GRN3 = new THREE.MeshStandardMaterial({ color: 0x567848, roughness: 0.72, metalness: 0.0 });
+    const FLOWER = new THREE.MeshStandardMaterial({ color: 0xd9b244, roughness: 0.6, metalness: 0.0 });
     const STN = new THREE.MeshStandardMaterial({ color: 0x8c8680, roughness: 0.88, metalness: 0.02, envMapIntensity: 0.2 });
     const PVD = new THREE.MeshStandardMaterial({ color: 0x5a544e, roughness: 0.92, metalness: 0.01 });
     const ASPHALT = new THREE.MeshStandardMaterial({ color: 0x242424, roughness: 0.95, metalness: 0.02 });
     const CURB = new THREE.MeshStandardMaterial({ color: 0xa8a29a, roughness: 0.85, metalness: 0.02 });
     const LED = new THREE.MeshStandardMaterial({ color: 0xffeedd, emissive: 0xffd090, emissiveIntensity: 0.55, roughness: 0.25 });
+    const LED_BRIGHT = new THREE.MeshStandardMaterial({ color: 0xffeedd, emissive: 0xffd090, emissiveIntensity: 0.7, roughness: 0.25 });
     const TRK = new THREE.MeshStandardMaterial({ color: 0x443224, roughness: 0.85, metalness: 0.0 });
+    const GRASS = new THREE.MeshStandardMaterial({ color: 0x5a7a42, roughness: 0.85, metalness: 0.0 });
 
     // Interior room materials
-    const INT_WALL = new THREE.MeshStandardMaterial({ color: 0xf5f0e6, roughness: 0.85, metalness: 0.0 });
-    const INT_WOOD = new THREE.MeshStandardMaterial({ color: 0x7c5a38, roughness: 0.55, metalness: 0.04 });
-    const INT_FABRIC = new THREE.MeshStandardMaterial({ color: 0x484440, roughness: 0.85, metalness: 0.0 });
-    const INT_CURTAIN = new THREE.MeshStandardMaterial({ color: 0xfaf6ef, transparent: true, opacity: 0.82, roughness: 0.9 });
+    const INT_WALL = new THREE.MeshStandardMaterial({ color: 0xf2ece0, roughness: 0.88, metalness: 0.0 });
+    const INT_WOOD = new THREE.MeshStandardMaterial({ color: 0x8a6440, roughness: 0.50, metalness: 0.05 });
+    const INT_FABRIC = new THREE.MeshStandardMaterial({ color: 0x3e3c38, roughness: 0.88, metalness: 0.0 });
+    const INT_CURTAIN = new THREE.MeshStandardMaterial({ color: 0xf8f4ec, transparent: true, opacity: 0.78, roughness: 0.92, side: THREE.DoubleSide });
 
     // ── Helpers ──
     function mk(geo, mat, x, y, z, shd) {
@@ -216,11 +222,11 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
       // 4. Glass pane
       parent.add(mk(new THREE.BoxGeometry(w - ft * 2, h - ft * 2, 0.012), GLS, x, y, z - rd * 0.45));
 
+      const roomD = 0.75; // depth of the interior room
+      const roomZ = z - rd - roomD / 2;
+
       // 5. Interior space behind glass
       if (interiorType) {
-        const roomD = 0.75; // depth of the interior room
-        const roomZ = z - rd - roomD / 2;
-
         // Back wall
         parent.add(mk(new THREE.BoxGeometry(w + 0.2, h + 0.1, 0.02), INT_WALL, x, y, z - rd - roomD));
         // Ceiling
@@ -232,7 +238,7 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
         parent.add(mk(new THREE.BoxGeometry(0.02, h + 0.1, roomD), INT_WALL, x + w / 2 + 0.08, y, roomZ));
 
         // Ceiling recessed downlight (warm LED)
-        parent.add(mk(new THREE.CylinderGeometry(0.035, 0.035, 0.01, 8), LED, x, y + h / 2 + 0.03, roomZ));
+        parent.add(mk(new THREE.CylinderGeometry(0.035, 0.035, 0.01, 8), LED_BRIGHT, x, y + h / 2 + 0.03, roomZ));
 
         // Point light inside room
         const roomLight = new THREE.PointLight(0xffdfa0, 0.65, 3.2);
@@ -251,13 +257,18 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
           // Sheer curtains framing window edges
           parent.add(mk(new THREE.BoxGeometry(0.08, h - ft * 2, 0.015), INT_CURTAIN, x - w / 2 + 0.05, y, z - rd * 0.8));
           parent.add(mk(new THREE.BoxGeometry(0.08, h - ft * 2, 0.015), INT_CURTAIN, x + w / 2 - 0.05, y, z - rd * 0.8));
+          
+          // Plant
+          parent.add(mk(new THREE.CylinderGeometry(0.02, 0.02, 0.1, 8), GRY2, x - w * 0.35, y - h / 2 + 0.05, roomZ));
+          parent.add(mk(new THREE.SphereGeometry(0.06, 6, 6), GRN, x - w * 0.35, y - h / 2 + 0.15, roomZ));
         } else if (interiorType === "bedroom") {
           // Bed headboard / credenza silhouette
           parent.add(mk(new THREE.BoxGeometry(w * 0.65, 0.25, 0.08), INT_WOOD, x, y - h / 2 + 0.14, z - rd - roomD + 0.08));
           // Bedside lamp
           parent.add(mk(new THREE.CylinderGeometry(0.04, 0.06, 0.07, 8), LED, x - w * 0.25, y - h / 2 + 0.22, z - rd - roomD + 0.15));
-          // Curtain
+          // Curtains
           parent.add(mk(new THREE.BoxGeometry(0.09, h - ft * 2, 0.015), INT_CURTAIN, x - w / 2 + 0.05, y, z - rd * 0.8));
+          parent.add(mk(new THREE.BoxGeometry(0.09, h - ft * 2, 0.015), INT_CURTAIN, x + w / 2 - 0.05, y, z - rd * 0.8)); // Second curtain
         } else if (interiorType === "study") {
           // Work desk
           parent.add(mk(new THREE.BoxGeometry(w * 0.7, 0.03, 0.25), INT_WOOD, x, y - h / 2 + 0.15, roomZ + 0.05));
@@ -267,14 +278,26 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
           parent.add(mk(new THREE.BoxGeometry(0.15, h * 0.7, 0.12), INT_WOOD, x + w * 0.32, y - h * 0.05, z - rd - roomD + 0.08));
           // Desk lamp
           parent.add(mk(new THREE.SphereGeometry(0.03, 6, 4), LED, x - w * 0.2, y - h / 2 + 0.22, roomZ + 0.05));
+          
+          // Plant
+          parent.add(mk(new THREE.CylinderGeometry(0.015, 0.015, 0.08, 8), GRY2, x + w * 0.35, y - h / 2 + 0.04, roomZ));
+          parent.add(mk(new THREE.SphereGeometry(0.05, 6, 6), GRN, x + w * 0.35, y - h / 2 + 0.1, roomZ));
         } else {
           // Simple soft warm glow interior
           parent.add(mk(new THREE.BoxGeometry(w * 0.5, 0.12, 0.2), INT_WOOD, x, y - h / 2 + 0.06, roomZ));
         }
       } else {
-        // Standard window: subtle dark warm cavity (not flat solid black!)
-        parent.add(mk(new THREE.BoxGeometry(w, h, rd), new THREE.MeshStandardMaterial({ color: 0x141618, roughness: 0.95 }), x, y, z - rd / 2, 0));
+        // Standard window: subtle dark warm cavity
+        parent.add(mk(new THREE.BoxGeometry(w - ft * 2, h - ft * 2, rd), new THREE.MeshStandardMaterial({ color: 0x1a1c20, roughness: 0.95 }), x, y, z - rd * 0.8, 0));
+        // Subtle warm ceiling panel inside
+        parent.add(mk(new THREE.BoxGeometry(w - ft * 2, 0.01, rd), new THREE.MeshStandardMaterial({ color: 0x2a2c30, roughness: 0.95 }), x, y + h / 2 - ft * 1.5, z - rd * 0.8, 0));
       }
+
+      // Add a subtle interior ceiling light glow even for null-type windows
+      const glowLight = new THREE.PointLight(0xffdfa0, 0.3, 1.5);
+      glowLight.position.set(x, y + h * 0.3, roomZ);
+      scene.add(glowLight);
+      iLts.push(glowLight);
     }
 
     // ══════════════════════════════════════════════════════
@@ -297,7 +320,7 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
     const S2 = 1.15;                  // second floor slab
     const S3 = 2.8;                   // roof slab
     const TT = 3.85;                  // tower top
-    const ST = 0.12;                  // slab thickness
+    const ST = 0.10;                  // slab thickness (reduced)
     const D = 0.18;                   // wall thickness
     const sW = BR - BL, sD = BF - BB;
     const mX = (BL + BR) / 2, mZ = (BF + BB) / 2;
@@ -310,6 +333,9 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
     G.base.add(mk(new THREE.BoxGeometry(22, 0.06, 18), STN, 0, GY - 0.03, 0, 1));
     // Property paved lawn / courtyard
     G.base.add(mk(new THREE.BoxGeometry(11, 0.02, 8.5), PVD, 0.5, GY + 0.01, 0, 1));
+
+    // Lawn area inside compound walls
+    G.base.add(mk(new THREE.BoxGeometry(sW + 0.4, 0.025, sD + 0.9), GRASS, mX, GY + 0.015, mZ + 0.45, 1));
 
     // ── Continuous Asphalt Road Loop ──
     const roadY = GY + 0.015;
@@ -328,6 +354,10 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
     G.base.add(mk(new THREE.BoxGeometry(0.08, 0.04, 6.4), CURB, 4.2, GY + 0.03, -0.1));
     G.base.add(mk(new THREE.BoxGeometry(0.08, 0.04, 6.4), CURB, -4.2, GY + 0.03, -0.1));
 
+    // Sidewalk strips along road edges
+    G.base.add(mk(new THREE.BoxGeometry(20, 0.03, 0.4), CURB, 0, GY + 0.02, 5.75, 1));
+    G.base.add(mk(new THREE.BoxGeometry(20, 0.03, 0.4), CURB, 0, GY + 0.02, 2.85, 1));
+
     // Dashed center line markings on front road
     for (let i = -7; i <= 7; i += 2) {
       G.base.add(mk(new THREE.BoxGeometry(1.0, 0.002, 0.06), WHT, i, roadY + 0.012, 4.3));
@@ -338,7 +368,7 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
     const cwZ = BF + 0.85; // front compound wall Z position
     // Front Left Wall
     G.base.add(mk(new THREE.BoxGeometry(sW * 0.55, cwH, 0.12), GRY2, BL + sW * 0.27, GY + cwH / 2, cwZ, 1));
-    // Circular decorative medallion on left wall (matching reference photo!)
+    // Circular decorative medallion on left wall
     const medallion = mk(new THREE.CylinderGeometry(0.18, 0.18, 0.02, 24), WHT, BL + sW * 0.27, GY + cwH * 0.52, cwZ + 0.07);
     medallion.rotateX(Math.PI / 2);
     G.base.add(medallion);
@@ -353,7 +383,7 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
     G.base.add(mk(new THREE.BoxGeometry(0.36, 0.12, 0.02), WHT, pillarX, GY + cwH * 0.65, cwZ + 0.10));
     G.base.add(mk(new THREE.BoxGeometry(0.28, 0.03, 0.025), BRS, pillarX, GY + cwH * 0.65, cwZ + 0.102));
 
-    // Modern Gate (between left wall and right pillar)
+    // Modern Gate
     const gateW = pillarX - 0.22 - (BL + sW * 0.55);
     const gateX = (pillarX - 0.22 + (BL + sW * 0.55)) / 2;
     G.base.add(mk(new THREE.BoxGeometry(gateW, cwH * 0.85, 0.03), MTL, gateX, GY + cwH * 0.425, cwZ));
@@ -362,7 +392,10 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
       G.base.add(mk(new THREE.BoxGeometry(0.015, cwH * 0.8, 0.04), WDK, gateX - gateW / 2 + (i + 1) * (gateW / 8), GY + cwH * 0.425, cwZ, 1));
     }
 
-    // Left Side Boundary Wall (connecting front wall back to rear)
+    // Paved driveway from gate to entrance steps
+    G.base.add(mk(new THREE.BoxGeometry(gateW, 0.026, cwZ - (BF + 0.85) + 0.5), PVD, gateX, GY + 0.018, cwZ - 0.25, 1));
+
+    // Left Side Boundary Wall
     const sideWallLen = cwZ - (BB - 0.4);
     G.base.add(mk(new THREE.BoxGeometry(0.12, cwH * 0.9, sideWallLen), GRY2, BL - 0.2, GY + cwH * 0.45, (cwZ + BB - 0.4) / 2, 1));
     // Right Side Boundary Wall
@@ -370,34 +403,44 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
     // Rear Boundary Wall
     G.base.add(mk(new THREE.BoxGeometry(sW + 0.62, cwH * 0.8, 0.12), GRY2, mX, GY + cwH * 0.4, BB - 0.4, 1));
 
-    // Hedges along top of compound wall (properly seated flush)
+    // Low hedge rows along boundary walls
+    G.base.add(mk(new THREE.BoxGeometry(0.3, 0.3, sideWallLen - 0.5), GRN, BL + 0.05, GY + 0.15, (cwZ + BB - 0.4) / 2, 1));
+    G.base.add(mk(new THREE.BoxGeometry(sW + 0.2, 0.3, 0.3), GRN, mX, GY + 0.15, BB - 0.15, 1));
+
+    // Hedges along top of compound wall
     for (let i = 0; i < 5; i++) {
       G.base.add(mk(new THREE.BoxGeometry(0.40, 0.14, 0.18), GRN, BL + 0.35 + i * 0.45, CW + 0.07, cwZ, 1));
     }
-    // Low flowering planters in front of right compound wall (matching reference image!)
+    // Low flowering planters
     const planW = 0.9;
     G.base.add(mk(new THREE.BoxGeometry(planW, 0.14, 0.26), GRY, BR - 0.3, GY + 0.07, cwZ + 0.22, 1));
     for (let i = 0; i < 4; i++) {
       G.base.add(mk(new THREE.SphereGeometry(0.06, 6, 5), FLOWER, BR - 0.65 + i * 0.24, GY + 0.17, cwZ + 0.22, 1));
     }
 
-    // Trees (anchored firmly into the ground so trunks NEVER hover)
+    // Trees (More realistic)
     function addTree(gp, x, z, h, thick) {
-      // Trunk starts below ground at GY - 0.15 for seamless grounding
-      const trunkH = h * 0.55;
+      const trunkH = h * 0.4;
       const ty = GY - 0.05 + trunkH / 2;
-      gp.add(mk(new THREE.CylinderGeometry(thick * 0.55, thick, trunkH, 8), TRK, x, ty, z, 1));
-      // Organic multi-cluster foliage
-      const cR = h * 0.20;
-      gp.add(mk(new THREE.IcosahedronGeometry(cR, 1), GRN, x, GY + h * 0.52, z, 1));
-      gp.add(mk(new THREE.IcosahedronGeometry(cR * 0.85, 1), GRN2, x + cR * 0.4, GY + h * 0.58, z - cR * 0.3, 1));
-      gp.add(mk(new THREE.IcosahedronGeometry(cR * 0.75, 1), GRN, x - cR * 0.35, GY + h * 0.62, z + cR * 0.25, 1));
-      gp.add(mk(new THREE.IcosahedronGeometry(cR * 0.60, 1), GRN2, x + cR * 0.1, GY + h * 0.68, z - cR * 0.15, 1));
+      gp.add(mk(new THREE.CylinderGeometry(thick * 0.6, thick, trunkH, 8), TRK, x, ty, z, 1));
+      
+      // Branching
+      const branch1 = mk(new THREE.CylinderGeometry(thick * 0.3, thick * 0.5, trunkH * 0.5, 8), TRK, x + 0.05, ty + trunkH * 0.3, z + 0.05, 1);
+      branch1.rotation.z = -0.3;
+      gp.add(branch1);
+      
+      const cR = h * 0.25;
+      gp.add(mk(new THREE.IcosahedronGeometry(cR, 2), GRN, x, GY + h * 0.55, z, 1));
+      gp.add(mk(new THREE.IcosahedronGeometry(h * 0.20, 2), GRN2, x + cR * 0.4, GY + h * 0.65, z - cR * 0.3, 1));
+      gp.add(mk(new THREE.IcosahedronGeometry(h * 0.22, 2), GRN3, x - cR * 0.35, GY + h * 0.70, z + cR * 0.25, 1));
+      gp.add(mk(new THREE.IcosahedronGeometry(h * 0.15, 2), GRN2, x + cR * 0.1, GY + h * 0.80, z - cR * 0.15, 1));
+      gp.add(mk(new THREE.IcosahedronGeometry(h * 0.18, 2), GRN, x - cR * 0.1, GY + h * 0.75, z - cR * 0.2, 1));
     }
-    addTree(G.base, -2.8, 2.2, 2.7, 0.06);
-    addTree(G.base,  3.2, 1.8, 2.5, 0.05);
-    addTree(G.base, -2.6, -1.8, 2.9, 0.06);
-    addTree(G.base,  3.0, -1.6, 2.6, 0.05);
+    addTree(G.base, -2.8, 2.2, 3.2, 0.06);
+    addTree(G.base,  3.2, 1.8, 3.0, 0.05);
+    addTree(G.base, -2.6, -1.8, 3.4, 0.06);
+    addTree(G.base,  3.0, -1.6, 3.1, 0.05);
+    addTree(G.base, gateX + 1.2, cwZ - 0.5, 2.2, 0.04); // Extra small tree near entrance
 
     // Ground-level shrubs
     [[-1.8, 1.8, 0.22], [2.2, 1.6, 0.20], [-2.2, 0.4, 0.22], [2.4, -0.6, 0.18]].forEach(([x, z, r]) => {
@@ -405,7 +448,7 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
       G.base.add(mk(new THREE.IcosahedronGeometry(r * 0.75, 1), GRN2, x + r * 0.3, GY + r * 0.55, z - r * 0.2, 1));
     });
 
-    // ═══ GROUND FLOOR (GY to S1) — Entrance, Doors, Louvers, Living Window ═══
+    // ═══ GROUND FLOOR (GY to S1) ═══
     const gfH = S1 - GY;
 
     // Back wall
@@ -414,25 +457,29 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
     G.cols.add(mk(new THREE.BoxGeometry(D, gfH, sD), WHT2, BL + D / 2, GY + gfH / 2, mZ, 1));
     // Right wall
     G.cols.add(mk(new THREE.BoxGeometry(D, gfH, sD), GRY, BR - D / 2, GY + gfH / 2, mZ, 1));
+    // Scoring lines on right GRY wall
+    for(let i=1; i<=3; i++) {
+      G.cols.add(mk(new THREE.BoxGeometry(D + 0.01, 0.015, sD), MTL, BR - D / 2, GY + gfH * (i/4), mZ));
+    }
 
-    // Front ground floor — left section: covered parking / staircase alcove
+    // Front ground floor — left section
     G.cols.add(mk(new THREE.BoxGeometry(1.0, gfH * 0.5, D), WHT, BL + 0.5, GY + gfH * 0.25, BF - D / 2, 1));
-    // Staircase diagonal element
     const stairGeo = new THREE.BoxGeometry(1.2, 0.06, 0.8);
     const stairMesh = mk(stairGeo, WHT2, BL + 0.6, GY + gfH * 0.45, BF - 0.1, 1);
     stairMesh.rotation.z = -0.45;
     G.cols.add(stairMesh);
     G.cols.add(mk(new THREE.BoxGeometry(0.02, gfH * 0.6, 0.02), MTL, BL + 1.1, GY + gfH * 0.5, BF + 0.1));
 
-    // Ground Floor Main Entrance Door (Center)
+    // Ground Floor Main Entrance Door
     const doorW = 0.58, doorH = gfH * 0.75;
     const doorX = -0.22, doorY = GY + doorH / 2;
-    // Door recess frame
     G.cols.add(mk(new THREE.BoxGeometry(doorW + 0.06, doorH + 0.04, D), MTL, doorX, doorY, BF - D / 2));
-    // Wooden door leaf
     G.cols.add(mk(new THREE.BoxGeometry(doorW, doorH, 0.04), WDK, doorX, doorY, BF - 0.02, 1));
-    // Modern vertical brass door handle
     G.cols.add(mk(new THREE.CylinderGeometry(0.01, 0.01, 0.35, 8), BRS, doorX + doorW * 0.35, doorY, BF + 0.02));
+    // House number plate
+    G.cols.add(mk(new THREE.BoxGeometry(0.08, 0.05, 0.01), BRS, doorX + doorW * 0.65, doorY + 0.2, BF + 0.05));
+    // Recessed downlight above door
+    G.cols.add(mk(new THREE.CylinderGeometry(0.04, 0.04, 0.01, 8), LED_BRIGHT, doorX, doorY + doorH / 2 - 0.02, BF - 0.04));
 
     // Vertical metal louvers beside door
     const louverCount = 10;
@@ -441,16 +488,16 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
     G.cols.add(mk(new THREE.BoxGeometry(louverSpan + 0.04, gfH * 0.65 + 0.04, 0.015), MTL, louverX, GY + gfH * 0.56, BF + 0.01));
     for (let i = 0; i < louverCount; i++) {
       const lx = louverX - louverSpan / 2 + (i + 0.5) * (louverSpan / louverCount);
-      const blade = mk(new THREE.BoxGeometry(0.012, gfH * 0.62, 0.045), MTL, lx, GY + gfH * 0.56, BF + 0.02, 1);
-      blade.rotation.y = 0.15;
+      const blade = mk(new THREE.BoxGeometry(0.012, gfH * 0.62, 0.045), MTL, lx, GY + gfH * 0.56, BF + 0.03, 1);
+      blade.rotation.y = 0.22;
       G.cols.add(blade);
     }
 
-    // Front ground floor — Right: Large Living Room Window with Visible Interior
+    // Front ground floor — Right
     G.cols.add(mk(new THREE.BoxGeometry(1.0, gfH * 0.45, D), WHT, BR - 0.6, GY + gfH * 0.22, BF - D / 2, 1));
     win(G.cols, BR - 0.6, GY + gfH * 0.65, BF, 0.85, gfH * 0.45, D, "living", true);
 
-    // Right side ground floor window with warm interior glow
+    // Right side ground floor window
     win(G.cols, BR, GY + gfH * 0.55, (BB + mZ) / 2 + 0.3, 0.6, gfH * 0.38, D, "lounge", false);
 
     // Facade junction reveals
@@ -460,25 +507,30 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
     // ═══ SLABS (with edge reveals and drip lines) ═══
     // First floor slab
     G.slabs.add(mk(new THREE.BoxGeometry(sW + 0.3, ST, sD + 0.2), WHT, mX, S1 + ST / 2, mZ + 0.1, 1));
-    G.slabs.add(mk(new THREE.BoxGeometry(sW + 0.3, 0.008, 0.012), GRY2, mX, S1 - 0.004, BF + 0.2));
+    G.slabs.add(mk(new THREE.BoxGeometry(sW + 0.301, 0.008, 0.012), MTL, mX, S1 + ST/2, BF + 0.2));
+    
     // First floor front balcony slab (left projection)
-    G.slabs.add(mk(new THREE.BoxGeometry(1.5, ST, 1.0), WHT, BL + 0.75, S1 + ST / 2, BF + 0.7, 1));
+    const balcST = 0.08;
+    G.slabs.add(mk(new THREE.BoxGeometry(1.5, balcST, 1.0), WHT, BL + 0.75, S1 + balcST / 2, BF + 0.7, 1));
     G.slabs.add(mk(new THREE.BoxGeometry(1.48, 0.01, 0.98), WHT2, BL + 0.75, S1 - 0.005, BF + 0.7));
-    G.slabs.add(mk(new THREE.BoxGeometry(1.5, 0.008, 0.012), GRY2, BL + 0.75, S1 - 0.004, BF + 1.19));
+    G.slabs.add(mk(new THREE.BoxGeometry(1.501, 0.008, 0.012), MTL, BL + 0.75, S1 + balcST/2, BF + 1.2));
+    // Wood deck surface on 1st floor balcony
+    G.slabs.add(mk(new THREE.BoxGeometry(1.48, 0.015, 0.98), WDK, BL + 0.75, S1 + balcST + 0.0075, BF + 0.7));
 
     // Second floor slab
     G.slabs.add(mk(new THREE.BoxGeometry(sW + 0.2, ST, sD + 0.15), WHT, mX, S2 + ST / 2, mZ + 0.08, 1));
-    G.slabs.add(mk(new THREE.BoxGeometry(sW + 0.2, 0.008, 0.012), GRY2, mX, S2 - 0.004, BF + 0.15));
-    // Second floor front cantilever (right side projection)
-    G.slabs.add(mk(new THREE.BoxGeometry(1.4, ST, 0.8), WHT, BR - 0.5, S2 + ST / 2, BF + 0.5, 1));
+    G.slabs.add(mk(new THREE.BoxGeometry(sW + 0.201, 0.008, 0.012), MTL, mX, S2 + ST/2, BF + 0.15));
+    // Second floor front cantilever
+    G.slabs.add(mk(new THREE.BoxGeometry(1.4, balcST, 0.8), WHT, BR - 0.5, S2 + balcST / 2, BF + 0.5, 1));
     G.slabs.add(mk(new THREE.BoxGeometry(1.38, 0.01, 0.78), WHT2, BR - 0.5, S2 - 0.005, BF + 0.5));
-    G.slabs.add(mk(new THREE.BoxGeometry(1.4, 0.008, 0.012), GRY2, BR - 0.5, S2 - 0.004, BF + 0.89));
+    G.slabs.add(mk(new THREE.BoxGeometry(1.401, 0.008, 0.012), MTL, BR - 0.5, S2 + balcST/2, BF + 0.9));
 
     // Roof slab
-    G.slabs.add(mk(new THREE.BoxGeometry(sW + 0.3, 0.14, sD + 0.2), WHT, mX, S3 + 0.07, mZ, 1));
-    G.slabs.add(mk(new THREE.BoxGeometry(sW + 0.3, 0.008, 0.012), GRY2, mX, S3 - 0.004, BF + 0.1));
+    const roofST = 0.10;
+    G.slabs.add(mk(new THREE.BoxGeometry(sW + 0.3, roofST, sD + 0.2), WHT, mX, S3 + roofST/2, mZ, 1));
+    G.slabs.add(mk(new THREE.BoxGeometry(sW + 0.301, 0.008, 0.012), MTL, mX, S3 + roofST/2, BF + 0.1));
 
-    // Subtle edge lines (architectural overlay)
+    // Subtle edge lines
     const ew = new THREE.LineBasicMaterial({ color: 0xb89a5a, transparent: true, opacity: 0.06 });
     [S1, S2].forEach(sy => {
       const eg = new THREE.EdgesGeometry(new THREE.BoxGeometry(sW + 0.3, ST, sD + 0.2), 25);
@@ -496,100 +548,110 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
     G.walls.add(mk(new THREE.BoxGeometry(D, f1H, sD), WHT2, BL + D / 2, (f1B + f1T) / 2, mZ, 1));
     // Right wall
     G.walls.add(mk(new THREE.BoxGeometry(D, f1H, sD), GRY, BR - D / 2, (f1B + f1T) / 2, mZ, 1));
+    for(let i=1; i<=3; i++) {
+      G.walls.add(mk(new THREE.BoxGeometry(D + 0.01, 0.015, sD), MTL, BR - D / 2, f1B + f1H * (i/4), mZ));
+    }
 
-    // Front facade — Left: Teak wood cladding panel + Bedroom Window with visible interior
+    // Front facade — Left: Teak wood
     G.walls.add(mk(new THREE.BoxGeometry(1.2, f1H, 0.04), WDK, BL + 0.6, (f1B + f1T) / 2, BF + 0.02, 1));
+    // Vertical wood grain lines
+    for(let i=1; i<10; i++) {
+      G.walls.add(mk(new THREE.BoxGeometry(0.005, f1H, 0.045), new THREE.MeshStandardMaterial({ color: 0x5a4130, roughness: 0.5 }), BL + 0.6 - 0.6 + i*0.12, (f1B + f1T) / 2, BF + 0.02));
+    }
+    // Brass accent strip
+    G.walls.add(mk(new THREE.BoxGeometry(1.2, 0.015, 0.05), BRS, BL + 0.6, f1B + 0.01, BF + 0.02));
     win(G.walls, BL + 0.6, (f1B + f1T) / 2 + 0.05, BF + 0.04, 0.68, f1H * 0.58, 0.06, "bedroom", true);
 
-    // Front facade — Center: Grey textured architectural panel with horizontal groove
+    // Front facade — Center: Grey textured architectural panel
     G.walls.add(mk(new THREE.BoxGeometry(0.8, f1H, D), GRY, 0, (f1B + f1T) / 2, BF - D / 2, 1));
     G.walls.add(mk(new THREE.BoxGeometry(0.8, 0.02, 0.03), MTL, 0, (f1B + f1T) / 2, BF + 0.01));
+    for(let i=1; i<=2; i++) {
+      G.walls.add(mk(new THREE.BoxGeometry(0.8, 0.015, D + 0.01), MTL, 0, f1B + f1H * (i/3), BF - D / 2));
+    }
 
-    // Front facade — Right: White wall + Dining/Lounge Window with visible interior
+    // Front facade — Right
     G.walls.add(mk(new THREE.BoxGeometry(1.2, f1H, D), WHT, BR - 0.6, (f1B + f1T) / 2, BF - D / 2, 1));
     G.walls.add(mk(new THREE.BoxGeometry(0.5, f1H, 0.04), WDK, BR - 0.25, (f1B + f1T) / 2, BF + 0.02, 1));
+    G.walls.add(mk(new THREE.BoxGeometry(0.5, 0.015, 0.05), BRS, BR - 0.25, f1B + 0.01, BF + 0.02));
     win(G.walls, BR - 0.8, (f1B + f1T) / 2 + 0.05, BF, 0.65, f1H * 0.52, D, "study", true);
 
-    // Right side first floor windows
     win(G.walls, BR, (f1B + f1T) / 2, mZ + 0.3, 0.5, f1H * 0.45, D, "lounge", false);
     win(G.walls, BR, (f1B + f1T) / 2, mZ - 0.5, 0.45, f1H * 0.4, D, null, false);
 
-    // Facade reveals
     G.walls.add(mk(new THREE.BoxGeometry(0.006, f1H, 0.03), GRY2, BL + 1.22, (f1B + f1T) / 2, BF + 0.01));
     G.walls.add(mk(new THREE.BoxGeometry(0.006, f1H, 0.03), GRY2, 0.42, (f1B + f1T) / 2, BF + 0.01));
 
-    // LED strip under overhang
     G.walls.add(mk(new THREE.BoxGeometry(sW * 0.6, 0.015, 0.025), LED, mX + 0.2, f1T - 0.02, BF + 0.05));
 
     // ═══ SECOND FLOOR WALLS (S2 to S3) ═══
     const f2B = S2 + ST, f2T = S3, f2H = f2T - f2B;
 
-    // Back wall
     G.walls.add(mk(new THREE.BoxGeometry(sW, f2H, D), WHT, mX, (f2B + f2T) / 2, BB + D / 2, 1));
-    // Left wall
     G.walls.add(mk(new THREE.BoxGeometry(D, f2H, sD), WHT2, BL + D / 2, (f2B + f2T) / 2, mZ, 1));
-    // Right wall
     G.walls.add(mk(new THREE.BoxGeometry(D, f2H, sD), GRY, BR - D / 2, (f2B + f2T) / 2, mZ, 1));
+    for(let i=1; i<=3; i++) {
+      G.walls.add(mk(new THREE.BoxGeometry(D + 0.01, 0.015, sD), MTL, BR - D / 2, f2B + f2H * (i/4), mZ));
+    }
 
-    // Front facade — Left: Wood panel + Window
+    // Front facade — Left
     G.walls.add(mk(new THREE.BoxGeometry(1.0, f2H, 0.04), WDK, BL + 0.5, (f2B + f2T) / 2, BF + 0.02, 1));
+    G.walls.add(mk(new THREE.BoxGeometry(1.0, 0.015, 0.05), BRS, BL + 0.5, f2B + 0.01, BF + 0.02));
     win(G.walls, BL + 0.5, (f2B + f2T) / 2 + 0.05, BF + 0.04, 0.62, f2H * 0.52, 0.06, "bedroom", true);
 
-    // Front facade — Center-Right: White wall with Ribbon Studio Windows
+    // Front facade — Center-Right
     G.walls.add(mk(new THREE.BoxGeometry(1.8, f2H, D), WHT, mX + 0.45, (f2B + f2T) / 2, BF - D / 2, 1));
     G.walls.add(mk(new THREE.BoxGeometry(0.6, f2H, 0.04), WDK, BR - 0.3, (f2B + f2T) / 2, BF + 0.02, 1));
+    G.walls.add(mk(new THREE.BoxGeometry(0.6, 0.015, 0.05), BRS, BR - 0.3, f2B + 0.01, BF + 0.02));
     win(G.walls, 0.2, (f2B + f2T) / 2 + 0.05, BF, 0.58, f2H * 0.50, D, "study", true);
     win(G.walls, 1.0, (f2B + f2T) / 2 + 0.05, BF, 0.58, f2H * 0.50, D, "living", true);
 
-    // Right side second floor window
     win(G.walls, BR, (f2B + f2T) / 2, mZ, 0.5, f2H * 0.45, D, "lounge", false);
 
-    // Facade reveals
     G.walls.add(mk(new THREE.BoxGeometry(0.006, f2H, 0.03), GRY2, BL + 1.02, (f2B + f2T) / 2, BF + 0.01));
     G.walls.add(mk(new THREE.BoxGeometry(0.006, f2H, 0.03), GRY2, BR - 0.58, (f2B + f2T) / 2, BF + 0.01));
 
-    // LED strip under second floor overhang
     G.walls.add(mk(new THREE.BoxGeometry(sW * 0.5, 0.015, 0.025), LED, mX + 0.3, f2T - 0.02, BF + 0.05));
 
     // ═══ BALCONIES, RAILINGS, CANOPY & LANDSCAPING ═══
 
-    // First floor left balcony — Glass Railing with Corner Return (No Gaps)
-    const b1Top = S1 + ST;
-    // Front Glass Railing
-    G.details.add(mk(new THREE.BoxGeometry(1.48, 0.52, 0.02), GLS_BALCONY, BL + 0.75, b1Top + 0.27, BF + 1.18));
+    // First floor left balcony
+    const b1Top = S1 + balcST;
+    G.details.add(mk(new THREE.BoxGeometry(1.48, 0.52, 0.015), GLS_BALCONY, BL + 0.75, b1Top + 0.27, BF + 1.18));
     G.details.add(mk(new THREE.BoxGeometry(1.50, 0.02, 0.03), MTL, BL + 0.75, b1Top + 0.54, BF + 1.18));
     G.details.add(mk(new THREE.BoxGeometry(1.50, 0.02, 0.03), MTL, BL + 0.75, b1Top + 0.02, BF + 1.18));
-    // Left Return Glass Railing (sealing the balcony securely)
-    G.details.add(mk(new THREE.BoxGeometry(0.02, 0.52, 0.96), GLS_BALCONY, BL + 0.01, b1Top + 0.27, BF + 0.70));
+    G.details.add(mk(new THREE.BoxGeometry(0.015, 0.52, 0.96), GLS_BALCONY, BL + 0.01, b1Top + 0.27, BF + 0.70));
     G.details.add(mk(new THREE.BoxGeometry(0.03, 0.02, 0.98), MTL, BL + 0.01, b1Top + 0.54, BF + 0.70));
-    // Railing posts
+    G.details.add(mk(new THREE.BoxGeometry(0.03, 0.02, 0.98), MTL, BL + 0.01, b1Top + 0.02, BF + 0.70));
     for (let i = 0; i < 3; i++) {
       G.details.add(mk(new THREE.BoxGeometry(0.02, 0.54, 0.02), MTL, BL + 0.15 + i * 0.60, b1Top + 0.27, BF + 1.18));
     }
 
-    // Planter Box firmly seated ON TOP of Balcony Slab
     G.details.add(mk(new THREE.BoxGeometry(0.55, 0.16, 0.24), GRY2, BL + 0.45, b1Top + 0.08, BF + 0.88));
     G.details.add(mk(new THREE.SphereGeometry(0.12, 6, 5), GRN, BL + 0.45, b1Top + 0.22, BF + 0.88, 1));
     G.details.add(mk(new THREE.SphereGeometry(0.09, 5, 4), GRN2, BL + 0.58, b1Top + 0.20, BF + 0.88, 1));
 
-    // First floor right — glass railing along slab edge
-    G.details.add(mk(new THREE.BoxGeometry(1.2, 0.50, 0.02), GLS_BALCONY, BR - 0.4, S1 + 0.33, BF + 0.05));
+    // First floor right
+    G.details.add(mk(new THREE.BoxGeometry(1.2, 0.50, 0.015), GLS_BALCONY, BR - 0.4, S1 + 0.33, BF + 0.05));
     G.details.add(mk(new THREE.BoxGeometry(1.25, 0.02, 0.03), MTL, BR - 0.4, S1 + 0.56, BF + 0.05));
+    G.details.add(mk(new THREE.BoxGeometry(1.25, 0.02, 0.03), MTL, BR - 0.4, S1 + 0.1, BF + 0.05)); // bottom rail
 
-    // Second floor — Cantilever Glass Railing with Side Return
-    const b2Top = S2 + ST;
-    // Front Glass Railing
-    G.details.add(mk(new THREE.BoxGeometry(1.38, 0.50, 0.02), GLS_BALCONY, BR - 0.50, b2Top + 0.26, BF + 0.88));
+    // Second floor — Cantilever Glass Railing
+    const b2Top = S2 + balcST;
+    G.details.add(mk(new THREE.BoxGeometry(1.38, 0.50, 0.015), GLS_BALCONY, BR - 0.50, b2Top + 0.26, BF + 0.88));
     G.details.add(mk(new THREE.BoxGeometry(1.40, 0.02, 0.03), MTL, BR - 0.50, b2Top + 0.52, BF + 0.88));
     G.details.add(mk(new THREE.BoxGeometry(1.40, 0.02, 0.03), MTL, BR - 0.50, b2Top + 0.02, BF + 0.88));
-    // Right Return Railing
-    G.details.add(mk(new THREE.BoxGeometry(0.02, 0.50, 0.78), GLS_BALCONY, BR + 0.19, b2Top + 0.26, BF + 0.50));
+    G.details.add(mk(new THREE.BoxGeometry(0.015, 0.50, 0.78), GLS_BALCONY, BR + 0.19, b2Top + 0.26, BF + 0.50));
     G.details.add(mk(new THREE.BoxGeometry(0.03, 0.02, 0.80), MTL, BR + 0.19, b2Top + 0.52, BF + 0.50));
+    G.details.add(mk(new THREE.BoxGeometry(0.03, 0.02, 0.80), MTL, BR + 0.19, b2Top + 0.02, BF + 0.50));
     for (let i = 0; i < 3; i++) {
       G.details.add(mk(new THREE.BoxGeometry(0.02, 0.52, 0.02), MTL, BR - 1.15 + i * 0.65, b2Top + 0.26, BF + 0.88));
     }
+    
+    // Plant cluster on 2nd floor cantilever
+    G.details.add(mk(new THREE.CylinderGeometry(0.12, 0.08, 0.2, 10), GRY2, BR - 0.8, b2Top + 0.1, BF + 0.7, 1));
+    G.details.add(mk(new THREE.SphereGeometry(0.15, 6, 6), GRN, BR - 0.8, b2Top + 0.25, BF + 0.7, 1));
 
-    // Second floor left projection with horizontal safety rails
+    // Second floor left projection
     G.details.add(mk(new THREE.BoxGeometry(0.9, 0.08, 0.6), WHT, BL + 0.45, S2, BF + 0.4, 1));
     for (let i = 0; i < 4; i++) {
       G.details.add(mk(new THREE.BoxGeometry(0.85, 0.015, 0.015), MTL, BL + 0.45, S2 + 0.12 + i * 0.12, BF + 0.68));
@@ -597,17 +659,23 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
     G.details.add(mk(new THREE.BoxGeometry(0.02, 0.5, 0.02), MTL, BL + 0.05, S2 + 0.25, BF + 0.68));
     G.details.add(mk(new THREE.BoxGeometry(0.02, 0.5, 0.02), MTL, BL + 0.85, S2 + 0.25, BF + 0.68));
 
-    // Entrance Canopy & Structure (connected seamlessly to wall)
+    // Entrance Canopy & Structure
     G.details.add(mk(new THREE.BoxGeometry(sW * 0.5, 0.06, 0.9), WHT, mX - 0.2, S1 - 0.03, BF + 0.65, 1));
     G.details.add(mk(new THREE.BoxGeometry(sW * 0.5 + 0.02, 0.018, 0.92), BRS, mX - 0.2, S1 - 0.06, BF + 0.65));
     G.details.add(mk(new THREE.BoxGeometry(sW * 0.48, 0.008, 0.88), WHT2, mX - 0.2, S1 - 0.065, BF + 0.65));
-    // Warm downlight under entrance porch
+    
+    // Thin metal canopy support columns
+    G.details.add(mk(new THREE.CylinderGeometry(0.02, 0.02, S1 - GY, 8), MTL, mX - 0.2 + sW*0.2, GY + (S1 - GY)/2, BF + 1.0));
+    G.details.add(mk(new THREE.CylinderGeometry(0.02, 0.02, S1 - GY, 8), MTL, mX - 0.2 - sW*0.2, GY + (S1 - GY)/2, BF + 1.0));
+
     const porchLight = new THREE.PointLight(0xffe0a0, 0.7, 2.5);
     porchLight.position.set(mX - 0.2, S1 - 0.10, BF + 0.65);
     scene.add(porchLight);
     iLts.push(porchLight);
 
-    // Entrance Steps (seamlessly grounded with stone treads and metal nosing)
+    // Entrance Steps & Landing
+    // Landing
+    G.details.add(mk(new THREE.BoxGeometry(1.4, 0.07, 0.4), STN, doorX, GY + 0.035 + 3*0.07, BF + 0.4, 1));
     for (let i = 0; i < 3; i++) {
       const stepW = 1.3 - i * 0.05;
       const sy = GY + 0.035 + i * 0.07;
@@ -616,51 +684,61 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
       G.details.add(mk(new THREE.BoxGeometry(stepW + 0.01, 0.008, 0.015), MTL, doorX, sy + 0.036, sz + 0.11));
     }
 
-    // Modern Wall Sconce Lights (warm glow accents)
+    // Modern Wall Sconce Lights
     [[BL + 0.6, f1T - 0.12, BF + 0.06], [BR - 0.6, f1T - 0.12, BF + 0.06],
      [0, f2T - 0.12, BF + 0.06], [BL + 0.5, f2T - 0.12, BF + 0.06]].forEach(([x, y, z]) => {
       G.details.add(mk(new THREE.CylinderGeometry(0.02, 0.02, 0.06, 8), MTL, x, y, z));
       G.details.add(mk(new THREE.SphereGeometry(0.018, 6, 4), LED, x, y - 0.04, z + 0.005));
     });
 
-    // Planters at Entrance (solidly grounded on the paved ground, no floating)
     [[-0.85, BF + 0.80], [0.55, BF + 0.80]].forEach(([x, z]) => {
-      // Pot sitting firmly on pavement (GY + 0.01)
       const potH = 0.24;
       G.details.add(mk(new THREE.CylinderGeometry(0.13, 0.10, potH, 10), GRY2, x, GY + 0.01 + potH / 2, z, 1));
       G.details.add(mk(new THREE.CylinderGeometry(0.14, 0.14, 0.018, 10), GRY, x, GY + 0.01 + potH, z));
-      // Organic shrub clusters
       G.details.add(mk(new THREE.IcosahedronGeometry(0.11, 1), GRN, x, GY + 0.01 + potH + 0.08, z, 1));
       G.details.add(mk(new THREE.IcosahedronGeometry(0.08, 1), GRN2, x + 0.04, GY + 0.01 + potH + 0.12, z - 0.02, 1));
     });
 
     // ═══ ROOF — Tower, Terrace, Parapet ═══
+    // Terrace floor surface
+    G.roof.add(mk(new THREE.BoxGeometry(sW + 0.2, 0.02, sD + 0.1), PVD, mX, S3 + roofST + 0.01, mZ));
+
     // Parapets
     G.roof.add(mk(new THREE.BoxGeometry(sW + 0.3, 0.20, 0.06), WHT, mX, S3 + 0.24, BF + 0.1));
     G.roof.add(mk(new THREE.BoxGeometry(sW + 0.3, 0.20, 0.06), WHT, mX, S3 + 0.24, BB - 0.1));
     G.roof.add(mk(new THREE.BoxGeometry(0.06, 0.20, sD + 0.4), WHT, BR + 0.15, S3 + 0.24, mZ));
     G.roof.add(mk(new THREE.BoxGeometry(sW + 0.4, 0.025, sD + 0.4), MTL, mX, S3 + 0.35, mZ));
 
-    // Left Tower Structure (extends above roof)
+    // Left Tower Structure
     const twW = TR - TL, twH = TT - S3;
     G.roof.add(mk(new THREE.BoxGeometry(twW, twH, sD * 0.6), WHT, (TL + TR) / 2, S3 + twH / 2, mZ + 0.15, 1));
     G.roof.add(mk(new THREE.BoxGeometry(twW + 0.02, twH, 0.04), WHT2, (TL + TR) / 2, S3 + twH / 2, BF + 0.12, 1));
     G.roof.add(mk(new THREE.BoxGeometry(twW + 0.1, 0.06, sD * 0.65), MTL, (TL + TR) / 2, TT + 0.03, mZ + 0.15));
+    
+    // Left parapet wall connecting to tower seamlessly
+    G.roof.add(mk(new THREE.BoxGeometry(0.06, 0.20, sD * 0.4), WHT, TL, S3 + 0.24, mZ - sD*0.3));
 
-    // Tower Front Window looking onto Rooftop
+    // Water tank
+    G.roof.add(mk(new THREE.BoxGeometry(0.8, 0.6, 0.8), MTL, (TL + TR) / 2 + 0.2, S3 + roofST + 0.3, BB + 0.4, 1));
+    // AC unit silhouette
+    G.roof.add(mk(new THREE.BoxGeometry(0.6, 0.5, 0.4), GRY, BR - 0.4, S3 + roofST + 0.25, mZ + 0.2, 1));
+
+    // Thin metal railing along right and front parapet tops
+    G.roof.add(mk(new THREE.BoxGeometry(sW + 0.2, 0.02, 0.02), MTL, mX, S3 + 0.45, BF + 0.1));
+    G.roof.add(mk(new THREE.BoxGeometry(0.02, 0.02, sD + 0.3), MTL, BR + 0.15, S3 + 0.45, mZ));
+    for(let i=0; i<6; i++) G.roof.add(mk(new THREE.BoxGeometry(0.02, 0.1, 0.02), MTL, mX - sW/2 + i*(sW/5), S3 + 0.4, BF + 0.1));
+    for(let i=0; i<6; i++) G.roof.add(mk(new THREE.BoxGeometry(0.02, 0.1, 0.02), MTL, BR + 0.15, S3 + 0.4, mZ - sD/2 + i*(sD/5)));
+
     win(G.roof, (TL + TR) / 2, S3 + twH * 0.62, BF + 0.14, 0.62, twH * 0.42, 0.06, "study", false);
 
-    // Tower Balcony (firmly seated)
     const tbY = TT - 0.5;
     G.roof.add(mk(new THREE.BoxGeometry(twW + 0.2, 0.06, 0.4), WHT, (TL + TR) / 2, tbY, BF + 0.35, 1));
-    // Horizontal metal railings
     for (let i = 0; i < 3; i++) {
       G.roof.add(mk(new THREE.BoxGeometry(twW + 0.15, 0.015, 0.015), MTL, (TL + TR) / 2, tbY + 0.10 + i * 0.13, BF + 0.52));
     }
     G.roof.add(mk(new THREE.BoxGeometry(0.02, 0.42, 0.02), MTL, TL - 0.05, tbY + 0.22, BF + 0.52));
     G.roof.add(mk(new THREE.BoxGeometry(0.02, 0.42, 0.02), MTL, TR + 0.05, tbY + 0.22, BF + 0.52));
 
-    // Planter on tower balcony (sitting directly on top of slab)
     G.roof.add(mk(new THREE.BoxGeometry(0.50, 0.14, 0.18), GRY2, (TL + TR) / 2, tbY + 0.10, BF + 0.32));
     G.roof.add(mk(new THREE.SphereGeometry(0.10, 6, 5), GRN, (TL + TR) / 2 - 0.1, tbY + 0.20, BF + 0.32, 1));
     G.roof.add(mk(new THREE.SphereGeometry(0.08, 5, 4), GRN2, (TL + TR) / 2 + 0.15, tbY + 0.19, BF + 0.32, 1));
@@ -692,7 +770,6 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
     wfGroup.add(twLine);
     bldg.add(wfGroup);
 
-    // Subtle guide lines
     const sgMat = new THREE.LineBasicMaterial({ color: 0xb89a5a, transparent: true, opacity: 0.05 });
     [BL, mX, BR].forEach(x => {
       G.base.add(new THREE.Line(
@@ -709,7 +786,7 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
       const car = new THREE.Group();
 
       const carPaint = new THREE.MeshStandardMaterial({
-        color: 0x9b1b22, // luxury deep crimson red metallic (matches reference image)
+        color: 0x9b1b22,
         roughness: 0.22,
         metalness: 0.85,
         envMapIntensity: 1.2,
@@ -755,47 +832,39 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
         roughness: 0.2,
       });
 
-      // Car body chassis
       const chassis = new THREE.Mesh(new THREE.BoxGeometry(0.66, 0.14, 1.55), carPaint);
       chassis.position.y = 0.15;
       chassis.castShadow = true;
       car.add(chassis);
 
-      // Underbody diffuser / dark trim
       const under = new THREE.Mesh(new THREE.BoxGeometry(0.64, 0.05, 1.52), carTrim);
       under.position.y = 0.07;
       car.add(under);
 
-      // Hood / Bonnet (sloped)
       const hood = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.08, 0.52), carPaint);
       hood.position.set(0, 0.21, 0.46);
       hood.rotation.x = 0.06;
       car.add(hood);
 
-      // Trunk / Boot (sloped)
       const trunk = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.09, 0.38), carPaint);
       trunk.position.set(0, 0.23, -0.52);
       trunk.rotation.x = -0.04;
       car.add(trunk);
 
-      // Cabin / Greenhouse
       const cabin = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.19, 0.72), carPaintDark);
       cabin.position.set(0, 0.29, -0.05);
       car.add(cabin);
 
-      // Windshield
       const windshield = new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.20, 0.02), carGlass);
       windshield.position.set(0, 0.29, 0.30);
       windshield.rotation.x = -0.55;
       car.add(windshield);
 
-      // Rear window
       const rearWin = new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.18, 0.02), carGlass);
       rearWin.position.set(0, 0.29, -0.40);
       rearWin.rotation.x = 0.52;
       car.add(rearWin);
 
-      // Side windows
       const sideWinL = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.15, 0.60), carGlass);
       sideWinL.position.set(-0.285, 0.28, -0.05);
       car.add(sideWinL);
@@ -803,12 +872,10 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
       sideWinR.position.set(0.285, 0.28, -0.05);
       car.add(sideWinR);
 
-      // Roof panel
       const roof = new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.02, 0.56), carPaint);
       roof.position.set(0, 0.39, -0.07);
       car.add(roof);
 
-      // Side mirrors
       const mirGeo = new THREE.BoxGeometry(0.07, 0.04, 0.05);
       const mirL = new THREE.Mesh(mirGeo, carTrim);
       mirL.position.set(-0.34, 0.25, 0.24);
@@ -817,12 +884,10 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
       mirR.position.set(0.34, 0.25, 0.24);
       car.add(mirR);
 
-      // Front grille
       const grille = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.06, 0.02), carTrim);
       grille.position.set(0, 0.14, 0.78);
       car.add(grille);
 
-      // Headlights
       const hlGeo = new THREE.BoxGeometry(0.12, 0.04, 0.03);
       const hlL = new THREE.Mesh(hlGeo, headLightMat);
       hlL.position.set(-0.22, 0.17, 0.77);
@@ -831,12 +896,10 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
       hlR.position.set(0.22, 0.17, 0.77);
       car.add(hlR);
 
-      // Headlight soft beam (subtle pointlight)
       const headGlow = new THREE.PointLight(0xfff2dd, 1.2, 3.5);
       headGlow.position.set(0, 0.2, 1.1);
       car.add(headGlow);
 
-      // Taillights
       const tlGeo = new THREE.BoxGeometry(0.18, 0.035, 0.02);
       const tlL = new THREE.Mesh(tlGeo, tailLightMat);
       tlL.position.set(-0.20, 0.20, -0.78);
@@ -845,7 +908,6 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
       tlR.position.set(0.20, 0.20, -0.78);
       car.add(tlR);
 
-      // 4 Wheels
       const wheelRadius = 0.12;
       const wheelThick = 0.07;
       const wheelGeo = new THREE.CylinderGeometry(wheelRadius, wheelRadius, wheelThick, 16);
@@ -856,10 +918,10 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
 
       const wheels = [];
       const wheelPositions = [
-        [-0.32, 0.12,  0.46], // Front Left
-        [ 0.32, 0.12,  0.46], // Front Right
-        [-0.32, 0.12, -0.48], // Rear Left
-        [ 0.32, 0.12, -0.48], // Rear Right
+        [-0.32, 0.12,  0.46],
+        [ 0.32, 0.12,  0.46],
+        [-0.32, 0.12, -0.48],
+        [ 0.32, 0.12, -0.48],
       ];
 
       wheelPositions.forEach(([wx, wy, wz]) => {
@@ -884,7 +946,6 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
       return { car, wheels };
     }
 
-    // Closed driving path loop around the outside of the house
     const carPath = new THREE.CatmullRomCurve3([
       new THREE.Vector3(-4.5, roadY, 4.3),
       new THREE.Vector3(-1.0, roadY, 4.3),
@@ -967,9 +1028,9 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
     let fid;
     const projVec = new THREE.Vector3();
     let lastNow = performance.now();
-    const carLoopDuration = 26000; // 26 seconds per complete loop (smooth, luxury pace)
+    const carLoopDuration = 26000;
     const carPathLength = carPath.getLength();
-    const carSpeed = carPathLength / (carLoopDuration / 1000); // units per second
+    const carSpeed = carPathLength / (carLoopDuration / 1000);
     const wheelRotPerSec = carSpeed / 0.12;
 
     function frame(now) {
@@ -981,7 +1042,6 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
       const p = Math.min(t / dur, 1);
       const cp = Math.min(t / camDur, 1);
 
-      // Assembly animation
       if (!noMo && p < 1) {
         G.base.position.y = -1.8 * (1 - ease(Math.min(p / 0.3, 1)));
         G.cols.position.y = -1.5 * (1 - ease(Math.max(0, Math.min((p - 0.1) / 0.35, 1))));
@@ -989,40 +1049,34 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
         G.walls.position.y = -1.0 * (1 - ease(Math.max(0, Math.min((p - 0.4) / 0.35, 1))));
         G.details.position.y = 0.8 * (1 - ease(Math.max(0, Math.min((p - 0.55) / 0.3, 1))));
         G.roof.position.y = 3.0 * (1 - ease(Math.max(0, Math.min((p - 0.65) / 0.35, 1))));
-        iLts.forEach(l => { l.intensity = ease(Math.max(0, Math.min((p - 0.75) / 0.25, 1))) * 0.65; });
+        iLts.forEach(l => { l.intensity = ease(Math.max(0, Math.min((p - 0.75) / 0.25, 1))) * (duskMode ? 0.65 : 0.08); });
       } else if (!assemblyDone) {
         ["base", "cols", "walls", "details", "roof"].forEach(k => { G[k].position.y = 0; });
         G.slabs.position.x = 0;
-        iLts.forEach(l => { l.intensity = 0.65; });
+        iLts.forEach(l => { l.intensity = duskMode ? 0.65 : 0.08; });
         assemblyDone = true;
       }
 
-      // ── Moving Car Continuous Path Animation ──
       const carProgress = ((now - t0) % carLoopDuration) / carLoopDuration;
       const cPos = carPath.getPointAt(carProgress);
       carData.car.position.copy(cPos);
 
-      // Dynamic orientation tangent
       const cTan = carPath.getTangentAt(carProgress);
       carData.car.rotation.y = Math.atan2(cTan.x, cTan.z);
 
-      // Continuous Wheel Spin
       carData.wheels.forEach(w => {
         w.rotation.x += wheelRotPerSec * dt;
       });
 
-      // ── Camera modes ──
       const isImm = pr.current.immersive;
 
       if (isImm) {
-        // Keyboard orbit
         const rs = 0.025;
         if (keysDown.has('ArrowLeft') || keysDown.has('a')) controls.rotateLeft(rs);
         if (keysDown.has('ArrowRight') || keysDown.has('d')) controls.rotateLeft(-rs);
         if (keysDown.has('ArrowUp') || keysDown.has('w')) controls.rotateUp(rs);
         if (keysDown.has('ArrowDown') || keysDown.has('s')) controls.rotateUp(-rs);
 
-        // Camera preset lerp
         const goal = sr.current.presetGoal;
         if (goal) {
           cam.position.lerp(goal.pos, 0.04);
@@ -1035,7 +1089,6 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
 
         controls.update();
       } else {
-        // Normal hero mode — camera entrance + parallax + scroll
         if (!noMo && cp < 1) cam.position.lerpVectors(camInit, camEnd, easeIO(cp));
 
         mC.x += (mT.x - mC.x) * 0.04;
@@ -1053,7 +1106,6 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
         cam.lookAt(lookAt.x, lookAt.y + sf * 0.12, lookAt.z);
       }
 
-      // ── Callout position projection ──
       if (assemblyDone) {
         CALLOUTS.forEach(c => {
           const cel = coRef.current[c.id];
@@ -1073,7 +1125,6 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
     }
     frame(performance.now());
 
-    // ── Cleanup ──
     cleanupFn = () => {
       cancelAnimationFrame(fid);
       window.removeEventListener("mousemove", onMM);
@@ -1110,7 +1161,6 @@ function ThreeHeroScene({ immersive = false, showWireframe = false, duskMode = t
 
   return (
     <div ref={mountRef} className="absolute inset-0 overflow-hidden" aria-hidden="true" style={{ pointerEvents: 'none' }}>
-      {/* Architectural Callouts — positioned by animation loop */}
       {CALLOUTS.map(c => (
         <div
           key={c.id}
