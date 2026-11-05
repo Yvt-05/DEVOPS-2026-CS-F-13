@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Enquiry = require("../models/Enquiry");
 const nodemailer = require("nodemailer");
 
@@ -35,9 +36,15 @@ async function createEnquiry(req, res) {
       return res.status(400).json({ error: "Name, email, and message are required." });
     }
 
-    // Save to MongoDB
-    const enquiry = new Enquiry({ name, email, phone, projectType, location, budget, message });
-    await enquiry.save();
+    // Save to MongoDB if connected, otherwise process in standalone mode
+    let enquiryId = "enq-" + Date.now();
+    if (mongoose.connection.readyState === 1) {
+      const enquiry = new Enquiry({ name, email, phone, projectType, location, budget, message });
+      await enquiry.save();
+      enquiryId = enquiry._id;
+    } else {
+      console.log("[Info] MongoDB offline - enquiry processed in standalone mode");
+    }
 
     // Send email notifications (only if SMTP settings are configured in .env)
     if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
@@ -86,7 +93,7 @@ ${message}
     res.status(201).json({
       success: true,
       message: "Enquiry received. We will contact you shortly.",
-      id: enquiry._id,
+      id: enquiryId,
     });
   } catch (err) {
     console.error("Error saving enquiry:", err.message);
@@ -97,8 +104,11 @@ ${message}
 // GET /api/enquiries — list all enquiries
 async function getAllEnquiries(req, res) {
   try {
-    const enquiries = await Enquiry.find().sort({ createdAt: -1 });
-    res.json(enquiries);
+    if (mongoose.connection.readyState === 1) {
+      const enquiries = await Enquiry.find().sort({ createdAt: -1 });
+      return res.json(enquiries);
+    }
+    return res.json([]);
   } catch (err) {
     res.status(500).json({ error: "Server error." });
   }

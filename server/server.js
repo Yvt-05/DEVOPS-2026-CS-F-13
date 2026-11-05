@@ -62,6 +62,21 @@ app.use((req, res, next) => {
 app.use("/api/projects",  projectRoutes);
 app.use("/api/enquiries", enquiryRoutes);
 
+// Root endpoint - API service overview
+app.get("/", (req, res) => {
+  res.json({
+    status: "ok",
+    service: "Shivakriti Constructions REST API",
+    version: "1.0.0",
+    endpoints: {
+      health: "/health",
+      projects: "/api/projects",
+      enquiries: "/api/enquiries [POST]",
+      metrics: "/metrics"
+    }
+  });
+});
+
 // Health check — useful for confirming the server is running
 app.get("/health", (req, res) => {
   res.json({ status: "ok", service: "Shivakriti Constructions API" });

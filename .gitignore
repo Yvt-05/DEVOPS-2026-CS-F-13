@@ -27,3 +27,8 @@ npm-debug.log*
 # Docker secrets (if any)
 *.pem
 *.key
+# Generated reports and caches
+*.pdf
+__pycache__/
+.cache/
+

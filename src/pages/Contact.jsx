@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { validateEnquiryForm } from "../utils/validation";
+import { API_ENDPOINTS } from "../config/api";
 
 /*
   Contact / Enquiry Page
@@ -44,7 +45,7 @@ function Contact() {
 
     try {
       // Send enquiry to the Express backend
-      const response = await fetch("http://localhost:5000/api/enquiries", {
+      const response = await fetch(API_ENDPOINTS.enquiries, {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
         body:    JSON.stringify(form),
